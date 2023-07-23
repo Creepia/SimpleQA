@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Final Rank</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+    <div>
+        <a href="/" class="index-btn button">Index</a>
+    </div>
+    <div>
+        <button class="screenshot-btn button" onclick="takeScreenshot()">Screenshot</button>
+    </div>
+    <div class="award-ceremony">
+        <div class="podium">
+            <div class="second-place">
+                <div class="rank-circle">P2</div>
+                <div class="score">Score: 80</div>
+            </div>
+            <div class="first-place">
+                <div class="rank-circle">P1</div>
+                <div class="score">Score: 95</div>
+            </div>
+            <div class="third-place">
+                <div class="rank-circle">P3</div>
+                <div class="score">Score: 70</div>
+            </div>
+        </div>
+    </div>
+    <div class="celebration">
+        <!-- Add some celebratory animations or effects here -->
+        <h1>Congratulations!</h1>
+    </div>
+    <script>
+        // Function to take a screenshot of the FinalRank.html page
+        function takeScreenshot() {
+            html2canvas(document.body).then(function (canvas) {
+                var link = document.createElement('a');
+                link.download = 'final_rank_screenshot.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+
+        // Add celebratory animations/effects when the page is loaded
+        document.addEventListener('DOMContentLoaded', function () {
+            var celebrationDiv = document.querySelector('.celebration');
+            celebrationDiv.style.display = 'block';
+            // Add celebratory animations/effects here, e.g., confetti, fireworks, etc.
+            setTimeout(function () {
+                celebrationDiv.style.display = 'none';
+            }, 3000); // Hide celebration after 3 seconds
+        });
+    </script>
+</body>
+
+</html>

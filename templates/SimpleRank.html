@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Rank</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <h1>Question {{ question_number }} Result</h1>
+    <p>Player 1: {{ player1_score }}</p>
+    <p>Player 2: {{ player2_score }}</p>
+    <p>Player 3: {{ player3_score }}</p>
+    <!-- Add more players as needed -->
+
+    <button id="next-button" class="button" onclick="toNextQuestion()">NEXT</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        // 发送加入房间事件
+        // socket.emit('join_room', { room_id: '{{ room_id }}' });
+    </script>
+</body>
+</html>

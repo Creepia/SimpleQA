@@ -1,0 +1,24 @@
+[
+  {
+    "type": "SMC",
+    "question": "What is the capital of France?",
+    "options": ["Paris", "London", "Rome", "Madrid"],
+    "answer": "A"
+  },
+  {
+    "type": "YN",
+    "question": "Is the Earth round?",
+    "answer": "Yes"
+  },
+  {
+    "type": "MMC",
+    "question": "Which colors are primary colors? (Select all that apply)",
+    "options": ["Red", "Green", "Blue", "Yellow"],
+    "answer": ["A", "C", "D"]
+  },
+  {
+    "type": "SA",
+    "question": "Who wrote the play \"Romeo and Juliet\"?",
+    "answer": "William Shakespeare"
+  }
+]

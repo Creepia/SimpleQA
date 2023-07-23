@@ -1,0 +1,135 @@
+body {
+    background-color: #add8e6;
+    text-align: center;
+    margin-top: 150px;
+}
+
+h1 {
+    font-size: 40px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #ffb6c1;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 10px;
+    transition: background-color 0.3s;
+}
+
+.index-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.screenshot-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.button:hover {
+    background-color: #FFB6C1;
+}
+
+.player-list-table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.ip {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    font-size: 12px;
+}
+
+.input{
+    background-color: lightpink;
+}
+
+.error-message {
+    color: red;
+}
+
+
+
+.small-text {
+    font-size: 14px;
+    color: #888;
+}
+
+.answer-option {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    justify-content: center;
+}
+
+.option-letter {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+    background-color: lightpink;
+    border: none;
+    border-radius: 50%;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.option-text {
+    font-size: 20px;
+    margin: 0;
+    text-align: left;
+}
+
+
+
+
+.award-ceremony {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.podium {
+    display: flex;
+}
+
+.second-place, .third-place {
+    width: 100px;
+    height: 200px;
+    background-color: silver;
+    margin: 0 20px;
+}
+
+.first-place {
+    width: 150px;
+    height: 250px;
+    background-color: gold;
+}
+
+.rank-circle {
+    width: 100px;
+    height: 100px;
+    background-color: red;
+    border-radius: 50%;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.score {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.celebration {
+    display: none;
+}

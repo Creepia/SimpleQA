@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prestart</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>ID <span id="room-id"> </span></h1>
+        <button class="button start-button" onclick="toQuestionShow()">Start</button>
+        <p class="filename">{{ file_name }}</p>
+        <div class="player-list">
+            <table class="player-list-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>IP</th>
+                    </tr>
+                </thead>
+                <tbody id="player-table">
+                    <!-- Player rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script>
+        displayPlayers();
+        displayRoomId();
+    </script>
+</body>
+</html>

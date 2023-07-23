@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PreAnswer</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Waiting for start...</h2>
+    </div>
+    <script>
+        // 定义一个函数，用于发送请求并检查房间状态
+        function checkRoomStatus() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var r=urlParams.get('room_id');
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/check_room_status/'+r);
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    var response = JSON.parse(xhr.responseText);
+                    if (response.status === 0) {
+                        // 如果房间状态为0，跳转到AnswerShow页面
+                        window.location.href = '/AnswerShow.html?room_id='+r;
+                    }
+                } else {
+                    // 请求错误处理
+                    console.error('An error occurred while checking the room status.');
+                }
+            };
+            xhr.send();
+        }
+
+        // 每隔一段时间调用checkRoomStatus函数
+        var interval = setInterval(checkRoomStatus, 500); // 5000毫秒，即5秒
+
+        // 当页面离开时，停止定时请求
+        window.onbeforeunload = function() {
+            clearInterval(interval);
+        };
+    </script>
+</body>
+</html>

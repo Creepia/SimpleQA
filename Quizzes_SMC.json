@@ -1,0 +1,68 @@
+[
+  {
+    "type": "SMC",
+    "question": "What is the capital of France?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Madrid"
+    ],
+    "answer": "A"
+  },
+  {
+    "type": "SMC",
+    "question": "What is the capital of Japan?",
+    "options": [
+      "Tokyo",
+      "Beijing",
+      "Seoul",
+      "New Delhi"
+    ],
+    "answer": "A"
+  },
+  {
+    "type": "SMC",
+    "question": "Which planet is known as the Red Planet?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Saturn"
+    ],
+    "answer": "A"
+  },
+  {
+    "type": "SMC",
+    "question": "What is the chemical symbol for oxygen?",
+    "options": [
+      "O2",
+      "H2O",
+      "CO2",
+      "NaCl"
+    ],
+    "answer": "A"
+  },
+  {
+    "type": "SMC",
+    "question": "Which famous scientist developed the theory of relativity?",
+    "options": [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Nikola Tesla"
+    ],
+    "answer": "B"
+  },
+  {
+    "type": "SMC",
+    "question": "Which is the largest mammal on Earth?",
+    "options": [
+      "Elephant",
+      "Blue Whale",
+      "Giraffe",
+      "Hippopotamus"
+    ],
+    "answer": "B"
+  }
+]

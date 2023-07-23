@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lobby Page</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Lobby Page</h1>
+    <button id="refresh-button" class="button" onclick="toLobby()">RefreshRooms</button>
+    <div>
+        <p>
+            {{Rooms}}
+        </p>
+    </div>
+</body>
+</html>

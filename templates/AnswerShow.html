@@ -4,10 +4,12 @@
     <title>Answer Show</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Q{{qtn_order}} {{qtn}}</h1>
+        <h3>Timer: <span id="timer">15</span> seconds</h3>
         <div class="answer-option">
             <button id="option-A" class="option-letter">A</button>
         </div>

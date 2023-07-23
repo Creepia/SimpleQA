@@ -83,16 +83,12 @@ def qsn_start_game():
 def ans_start_game():
     room_id=request.args.get("room_id")
     if(room_id in Rooms):
-        number_of_questions=len(Rooms[room_id]["questions"])
         # 展示第一个问题时，status==0
-        if(Rooms[room_id]["status"]<number_of_questions-1):
-           Rooms[room_id]["status"]+=1
-           qtn_order=Rooms[room_id]["status"]
-           if(Rooms[room_id]["questions"][qtn_order]["type"]=="SMC"):
-                qtn=Rooms[room_id]["questions"][qtn_order]["question"]
-                opt=Rooms[room_id]["questions"][qtn_order]["options"]
-                ans=Rooms[room_id]["questions"][qtn_order]["answer"]
-                
+        qtn_order=Rooms[room_id]["status"]
+        if(Rooms[room_id]["questions"][qtn_order]["type"]=="SMC"):
+            qtn=Rooms[room_id]["questions"][qtn_order]["question"]
+            opt=Rooms[room_id]["questions"][qtn_order]["options"]
+            ans=Rooms[room_id]["questions"][qtn_order]["answer"]
         return render_template('AnswerShow.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
     else:
         return render_template('AnswerShow.html')
@@ -138,7 +134,7 @@ def process_json():
     # 取得房间id
     room_id = request.form['room_id']
     Rooms[room_id]={"status":-1,"players":{},"questions":[]}
-    print(f"Added new room {room_id}")
+    # print(f"Added new room {room_id}")
     
     # 取得问题集json
     print("start process_json")
@@ -178,5 +174,5 @@ def checkRoomExist():
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',debug=1)
-    socketio.run(app, host='0.0.0.0', port=5000)
+    # app.run(host='0.0.0.0',debug=1)
+    socketio.run(app, host='0.0.0.0', port=5000,debug=1)

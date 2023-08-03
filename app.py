@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit,send,join_room,leave_room
 from random import randint
 import json,time
 
@@ -8,11 +8,11 @@ socketio = SocketIO(app)
 Rooms = {
     "000000":{
         "master":"123.123.123.123",
-        "players":{
-            "123.222.0.1":"Alice",
-            "20.151.8.1":"Bob",
-            "123.31.4.5":"Charlie"
-            },
+        "players":[
+            { "name": 'Alex', "ip": '123.4.56.78' },
+            { "name": 'Bob', "ip": '100.2.88.9' },
+            { "name": 'Carol', "ip": '102.0.231.114' }
+        ],
         "questions":[
             {
                 "type": "SMC",
@@ -21,7 +21,8 @@ Rooms = {
                 "answer": "A"
             },
         ],
-        "status":-1
+        "status":-1,
+        "timer":0
     }
 }
 
@@ -119,60 +120,89 @@ def final_rank():
 def preanswer():
     return render_template('PreAnswer.html')
 
-
-@app.route('/check_room_status/<string:room_id>', methods=['GET'])
-def check_room_status(room_id):
+@socketio.on("checkRoomStatus")
+def checkRoomStatus(room_id):
     if room_id in Rooms:
         room_status = Rooms[room_id]['status']
-        return jsonify({'status': room_status})
+        return room_status
     else:
-        return jsonify({'status': -1})  # 返回-1表示房间不存在
-
-
-@app.route('/process_json', methods=['POST'])
-def process_json():
-    # 取得房间id
-    room_id = request.form['room_id']
-    Rooms[room_id]={"status":-1,"players":{},"questions":[]}
-    # print(f"Added new room {room_id}")
+        # 返回-2表示房间不存在
+        return -2
     
-    # 取得问题集json
-    print("start process_json")
-    qtn_file = request.files['file']
-    if qtn_file and qtn_file.filename.endswith('.json'):
-        try:
-            data = json.load(qtn_file)
-            print(data)
-            # 在这里对 JSON 数据进行处理
-            Rooms[room_id]["questions"]=data
-            return jsonify({'success': True})
-        except Exception as e:
-            error_message = str(e)
-    else:
-        error_message = 'Invalid file format. Please upload a .json file.'
-    
-    return jsonify({'success': False, 'error': error_message})
-
-@app.route('/check_room',methods=['POST'])
-def checkRoomExist():
-    data = request.get_json()
-    room_id = data.get('room_id')
+@socketio.on("checkPlayers")
+def checkPlayers(room_id):
     if room_id in Rooms:
-        user_name = data.get('name')
+        players = Rooms[room_id]['players']
+        return players
+    else:
+        # 返回-2表示房间不存在
+        return -2
+
+
+@socketio.on("checkRoomExists")
+def checkRoomExists(data):
+    room_id = data["room_id"]
+    if room_id in Rooms:
+        user_name = data["name"]
+        print(user_name)
         if(user_name !=""):
             # 进入回答第一个问题，加入玩家
             user_ip = request.remote_addr
-            Rooms[room_id]["players"][user_ip]=user_name
-            return jsonify({'room_exists': True,'isReady':True})
+            Rooms[room_id]["players"].append({"ip":user_ip,"name":user_name})
+            return {'room_exists': True,'isReady':True}
         else:
-            return jsonify({'room_exists': True,'isReady':False})
+            return {'room_exists': True,'isReady':False}
     else:
-        return jsonify({'room_exists': False})
+        return {'room_exists': False}
 
+@socketio.on("removePlayer")
+def removePlayer(data):
+    room_id=data["room_id"]
+    ip=data["ip"]
+    print(ip)
+    for p in Rooms[room_id]["players"]:
+        if(p["ip"]==ip):
+            Rooms[room_id]["players"].remove(p)
+            break
 
+@socketio.on("newQuestion")
+def newQuestion(room_id):
+    start_time=time.time()
+    print(start_time)
+    Rooms[room_id]["timer"]=start_time
 
+@socketio.on("getSecondsLeft")
+def getSecondsLeft(data):
+    room_id=data["room_id"]
+    current_time=time.time()
+    left_seconds=int(Rooms[room_id]["timer"]+15-current_time)
+    if(left_seconds>0):
+        return left_seconds
+    else:
+        return 0
 
+@socketio.on('process_newroom')
+def process_newroom(data):
+    # 取得房间id
+    # print("start process_newroom")
+    room_id=data["room_id"]
+    Rooms[room_id]={"status":-1,"players":[],"questions":[]}
+    # 取得问题集json
+    # print("start process_json")
+    qtn_file = data['file']
+    try:
+        data = json.loads(qtn_file)
+        # print(data)
+        # 在这里对 JSON 数据进行处理
+        Rooms[room_id]["questions"]=data
+        # print(request.sid)
+        join_room(room_id)
+        return {'sucess': True}
+    except Exception as e:
+        # 客户端状态回传（待优化）
+        return {'sucess': False,'error_msg':str(e)}
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0',debug=1)
-    socketio.run(app, host='0.0.0.0', port=5000,debug=1)
+    # socketio.run(app, host='0.0.0.0', port=5000,debug=1)
+    socketio.run(app,debug=1)

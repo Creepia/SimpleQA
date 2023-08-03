@@ -1,60 +1,51 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Join Room</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        function checkRoom() {
+            var roomId = document.getElementById('room-id').value;
+            var name = document.getElementById('name').value;
+            var name_group = document.getElementById('name-group');
+            console.log("name_group is none");
+            socket.emit("checkRoomExists", { "room_id": roomId, "name": name }, function (res) {
+                console.log(res);
+                if (res["room_exists"]) {
+                    name_group.style.display = 'block';
+                    if (res["isReady"]) {
+                        window.location.href = 'PreAnswer.html?room_id=' + roomId;
+                    }
+                } else {
+                    // 如果房间不存在，隐藏Name输入框
+                    name_group.style.display = 'none';
+                }
+            });
+
+        }
+    </script>
 </head>
+
 <body>
     <div class="container">
         <h1>Join Room</h1>
-        <form id="join-form" action="/join" method="post">
-            <div class="form-group">
-                <label for="room-id">Room ID:</label>
-                <input type="text" id="room-id" name="room_id" required>
-            </div>
-            <div id="name-group" class="form-group" style="display: none;">
-                <label for="name">Name:</label>
-                <input type="text" id="name" name="name" autocomplete="off">
-            </div>
-            <button type="submit" class="button">Join</button>
-        </form>
+        <div class="form-group">
+            <label for="room-id">Room ID:</label>
+            <input type="text" id="room-id" name="room_id" required>
+        </div>
+        <div id="name-group" class="form-group" style="display: none;">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" autocomplete="off">
+        </div>
+        <button class="button" onclick="checkRoom()">Join</button>
     </div>
 
     <script>
-        document.getElementById('join-form').onsubmit = function (event) {
-            // alert("pressed button")
-            event.preventDefault();
-            var roomId = document.getElementById('room-id').value;
-            var name = document.getElementById('name').value;
 
-            // 发送Ajax请求，验证房间是否存在
-            // alert("pressed button")
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/check_room');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    var response = JSON.parse(xhr.responseText);
-                    if (response.room_exists) {
-                        // 如果房间存在，显示Name输入框并添加required属性
-                        document.getElementById('name-group').style.display = 'block';
-                        document.getElementById('name').required = true;
-                        if(response.isReady){
-                            window.location.href = 'PreAnswer.html?room_id='+roomId;
-                        }
-                    } else {
-                        // 如果房间不存在，隐藏Name输入框并移除required属性
-                        document.getElementById('name-group').style.display = 'none';
-                        document.getElementById('name').required = false;
-                    }
-                } else {
-                    // 请求错误处理
-                    alert('An error occurred while checking the room.');
-                }
-            };
-            xhr.send(JSON.stringify({ room_id: roomId, name: name }));
-        };
     </script>
 </body>
+
 </html>

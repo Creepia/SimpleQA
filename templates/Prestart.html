@@ -1,10 +1,27 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Prestart</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var players = [
+            { name: 'Alex', ip: '123.4.56.78' },
+            { name: 'Bob', ip: '100.2.88.9' },
+            { name: 'Carol', ip: '102.0.231.114' }
+        ];
+        
+        function toQuestionShow() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var r = urlParams.get('room_id');
+            window.location.href = 'QuestionShow.html?room_id=' + r;
+        }
+
+    </script>
 </head>
+
 <body>
     <div class="container">
         <h1>ID <span id="room-id"> </span></h1>
@@ -25,8 +42,62 @@
         </div>
     </div>
     <script>
-        displayPlayers();
-        displayRoomId();
+        var urlParams = new URLSearchParams(window.location.search);
+        var roomIdTitle = document.getElementById('room-id');
+        var room_id = urlParams.get('room_id');
+        function displayPlayers() {
+            var playerTable = document.getElementById('player-table');
+            playerTable.innerHTML = '';
+            socket.emit("checkPlayers", room_id, function (pl) {
+                console.log(pl);
+                players = pl;
+            });
+            for (var i = 0; i < players.length; i++) {
+                var player = players[i];
+                var row = document.createElement('tr');
+                var nameCell = document.createElement('td');
+                var ipCell = document.createElement('td');
+
+                nameCell.textContent = player.name;
+                ipCell.textContent = player.ip;
+
+                row.appendChild(nameCell);
+                row.appendChild(ipCell);
+
+                // 添加鼠标悬停和点击事件监听器
+                row.addEventListener('mouseover', function () {
+                    this.style.color = 'red';
+                    this.style.textDecoration = 'line-through';
+                });
+
+                row.addEventListener('mouseout', function () {
+                    this.style.color = '';
+                    this.style.textDecoration = '';
+                });
+
+                row.addEventListener('click', function () {
+                    // 获取被点击的元素的index，然后在index处删除1个元素
+                    var index = Array.from(playerTable.children).indexOf(this);
+                    players.splice(index, 1);
+                    var ip = this.children[1].textContent;
+                    console.log(ip);
+                    socket.emit("removePlayer", { "ip": ip, "room_id": room_id });
+                    displayPlayers();
+                });
+
+                playerTable.appendChild(row);
+            }
+        }
+        console.log("show id");
+        roomIdTitle.textContent = room_id;
+        // 每隔一段时间调用函数，单位为ms
+        var interval = setInterval(displayPlayers, 1000);
+        // 当页面离开时，停止定时请求
+        window.onbeforeunload = function () {
+            clearInterval(interval);
+        };
+
     </script>
 </body>
+
 </html>

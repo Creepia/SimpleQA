@@ -1,10 +1,59 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Room Create</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var file;
+        // 随机生成一个房间号（待优化为唯一标识）
+        var room_id = Math.floor(Math.random() * 1000000) + 1;
+        room_id=room_id.toString();
+
+        function checkFile() {
+            var fileInput = document.getElementById('file-input');
+            var errorMessage = document.getElementById('error-message');
+            var nextButton = document.getElementById('next-button');
+
+            file = fileInput.files[0];
+            if (file && file.name.endsWith('.json')) {
+                // 文档后缀为json，等待发送file
+                alert(room_id);
+                nextButton.classList.remove('disabled');
+                nextButton.disabled = false;
+                errorMessage.textContent = '';
+
+            } else {
+                // 文件格式错误，显示错误信息
+                nextButton.classList.add('disabled');
+                nextButton.disabled = true;
+                errorMessage.textContent = 'Invalid file format. Please upload a .json file.';
+            }
+        }
+
+        function toPrestart() {
+            var errorMessage = document.getElementById('error-message');
+            var nextButton = document.getElementById('next-button');
+            // 将文件数据作为请求体发送给后端
+            socket.emit('process_newroom', { "file": file, "room_id": room_id }, function (res) {
+                console.log(res);
+                // 待优化
+                if (res["sucess"]) {
+                    // 文件格式正确，跳转到该房间号的页面
+                    window.location.href = 'Prestart.html?room_id=' + room_id;
+                } else {
+                    // 文件格式错误，显示错误信息
+                    nextButton.classList.add('disabled');
+                    nextButton.disabled = true;
+                    errorMessage.textContent = res["error_msg"];
+                }
+            });
+        }
+    </script>
 </head>
+
 <body>
     <div class="container">
         <h1>Room Create</h1>
@@ -16,4 +65,5 @@
         <button id="next-button" class="button next-button" onclick="toPrestart()" disabled>NEXT</button>
     </div>
 </body>
+
 </html>

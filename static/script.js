@@ -1,19 +1,6 @@
-
-
-
-
-function toLobby(){
+function toLobby() {
     window.location.href = 'lobby.html';
 }
-
-function toNextQuestion(){
-    var urlParams = new URLSearchParams(window.location.search);
-    var r=urlParams.get('room_id');
-    window.location.href = 'QuestionShow.html?room_id='+r;
-}
-
-
-
 
 
 

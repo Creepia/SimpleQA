@@ -9,9 +9,9 @@ Rooms = {
     "000000":{
         "master":"123.123.123.123",
         "players":[
-            { "name": 'Alex', "ip": '123.4.56.78' },
-            { "name": 'Bob', "ip": '100.2.88.9' },
-            { "name": 'Carol', "ip": '102.0.231.114' }
+            { "name": 'Alex', "ip": '123.4.56.78' ,"score":10},
+            { "name": 'Bob', "ip": '100.2.88.9' ,"score":20},
+            { "name": 'Carol', "ip": '102.0.231.114',"score":30 }
         ],
         "questions":[
             {
@@ -26,29 +26,6 @@ Rooms = {
     }
 }
 
-'''# 处理客户端点击 NEXT 按钮的事件
-@socketio.on('next_question')
-def next_question(data):
-    room_id = data['room_id']
-    # 在此处处理进入下一题的逻辑
-    # 更新题目信息，开始新一轮的计时
-
-# 处理客户端回答问题的事件
-@socketio.on('answer_question')
-def answer_question(data):
-    room_id = data['room_id']
-    question_number = data['question_number']
-    # 在此处处理客户端回答问题的逻辑
-    # 计算玩家得分等操作'''
-
-# 这个函数用于启动计时器
-def start_timer():
-    time_remaining = 15
-    while time_remaining > 0:
-        time.sleep(1)
-        time_remaining -= 1
-        socketio.emit('timer_update', {'time': time_remaining}, broadcast=True)
-
 @app.route('/lobby.html')
 def lobby():
     return render_template('lobby.html', Rooms=Rooms)
@@ -61,6 +38,10 @@ def index():
 @app.route('/RoomCreate.html')
 def room_create():
     return render_template('RoomCreate.html')
+
+@app.route('/SimpleScoreShow.html')
+def simple_score_show():
+    return render_template('SimpleScoreShow.html')
 
 @app.route('/QuestionShow.html')
 def qsn_start_game():
@@ -95,7 +76,7 @@ def ans_start_game():
         return render_template('AnswerShow.html')
 
 @app.route('/Rank.html')
-def simple_rank():
+def to_rank():
     room_id=request.args.get("room_id")
     if(Rooms[room_id]["status"]<len(Rooms[room_id]["questions"])-1):
         return render_template('SimpleRank.html',room_id=room_id)
@@ -129,7 +110,7 @@ def checkRoomStatus(room_id):
         # 返回-2表示房间不存在
         return -2
     
-@socketio.on("checkPlayers")
+@socketio.on("checkPlayersData")
 def checkPlayers(room_id):
     if room_id in Rooms:
         players = Rooms[room_id]['players']
@@ -138,6 +119,23 @@ def checkPlayers(room_id):
         # 返回-2表示房间不存在
         return -2
 
+@socketio.on("checkRankPlayers")
+def checkRankPlayers(room_id):
+    # 将改房间的玩家list按分数大到小排序
+    Rooms[room_id]["players"].sort(key=lambda player:player["score"],reverse=True)
+    top3_players_data={
+        "p1_name":"","p1_score":0,
+        "p2_name":"","p2_score":0,
+        "p3_name":"","p3_score":0
+    }
+    for i in range(1,4):
+        try:
+            top3_players_data[f"p{i}_name"]=Rooms[room_id]["players"][i-1]["name"]
+            top3_players_data[f"p{i}_score"]=Rooms[room_id]["players"][i-1]["score"]
+        except:
+            break
+    print(top3_players_data)
+    return top3_players_data
 
 @socketio.on("checkRoomExists")
 def checkRoomExists(data):
@@ -148,7 +146,7 @@ def checkRoomExists(data):
         if(user_name !=""):
             # 进入回答第一个问题，加入玩家
             user_ip = request.remote_addr
-            Rooms[room_id]["players"].append({"ip":user_ip,"name":user_name})
+            Rooms[room_id]["players"].append({"ip":user_ip,"name":user_name,"score":0})
             return {'room_exists': True,'isReady':True}
         else:
             return {'room_exists': True,'isReady':False}

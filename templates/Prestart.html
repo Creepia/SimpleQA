@@ -48,7 +48,7 @@
         function displayPlayers() {
             var playerTable = document.getElementById('player-table');
             playerTable.innerHTML = '';
-            socket.emit("checkPlayers", room_id, function (pl) {
+            socket.emit("checkPlayersData", room_id, function (pl) {
                 console.log(pl);
                 players = pl;
             });
@@ -92,10 +92,6 @@
         roomIdTitle.textContent = room_id;
         // 每隔一段时间调用函数，单位为ms
         var interval = setInterval(displayPlayers, 1000);
-        // 当页面离开时，停止定时请求
-        window.onbeforeunload = function () {
-            clearInterval(interval);
-        };
 
     </script>
 </body>

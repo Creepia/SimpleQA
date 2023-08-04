@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Rank</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var urlParams = new URLSearchParams(window.location.search);
+        var room_id = urlParams.get('room_id');
+    </script>
+</head>
+
+<body>
+    <h1>Q{{ question_number }} Result</h1>
+    <p id="player_name">Alice</p>
+    <p id="player_score">0</p>
+    <h2>Waiting for start...</h2>
+    <script>
+        
+        socket.on("refreshSimpleScoreShow",function(name,score){
+
+        });
+    </script>
+</body>
+
+</html>

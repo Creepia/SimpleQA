@@ -1,36 +1,40 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>PreAnswer</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
 </head>
+
 <body>
     <div class="container">
         <h2>Waiting for start...</h2>
     </div>
     <script>
         // 定义一个函数，用于发送请求并检查房间状态
+        var urlParams = new URLSearchParams(window.location.search);
+        var room_id = urlParams.get('room_id');
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
         function checkRoomStatus() {
-            var urlParams = new URLSearchParams(window.location.search);
-            var room_id=urlParams.get('room_id');
-            var socket = io.connect('http://' + document.domain + ':' + location.port);
-            socket.emit("checkRoomStatus",room_id,function(room_status){
-                if (room_status=== 0) {
-                        // 如果房间状态为0，跳转到AnswerShow页面
-                        window.location.href = '/AnswerShow.html?room_id='+r;
-                    }
+            socket.emit("checkRoomStatus", room_id, function (room_status) {
+                console.log(room_status);
+                if (room_status === 0) {
+                    // 如果房间状态为0，跳转到AnswerShow页面
+                    window.location.href = '/AnswerShow.html?room_id=' + room_id;
+                }
             });
-           
+
         }
 
         // 每隔一段时间调用checkRoomStatus函数，单位为ms
         var interval = setInterval(checkRoomStatus, 500);
 
         // 当页面离开时，停止定时请求
-        window.onbeforeunload = function() {
+        window.onbeforeunload = function () {
             clearInterval(interval);
         };
     </script>
 </body>
+
 </html>

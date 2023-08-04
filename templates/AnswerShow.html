@@ -23,5 +23,29 @@
             <button id="option-D"class="option-letter">Δ</button>
         </div>
     </div>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var urlParams = new URLSearchParams(window.location.search);
+        var room_id = urlParams.get('room_id');
+
+        function RefreshTimer() {
+            //将room_id传到后端，再在后端计算剩余秒数传回
+            socket.emit("getSecondsLeft", { "room_id": room_id }, function (left_seconds) {
+                document.getElementById('timer').textContent = left_seconds;
+                //秒数为0时跳转到SimpleRank.html
+                if (left_seconds <= 0) {
+                    clearInterval(interval);
+                    window.location.href = 'Rank.html?room_id=' + room_id;
+                }
+            });
+        }
+        
+        //一打开问题后端就记录时间
+        socket.emit("newQuestion", room_id);
+
+        // 每隔一段时间调用函数，单位为ms
+        var interval = setInterval(RefreshTimer, 100);
+       
+    </script>
 </body>
 </html>

@@ -6,37 +6,10 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-</head>
-
-<body>
-    <div>
-        <a href="/" class="index-btn button">Index</a>
-    </div>
-    <div>
-        <button class="screenshot-btn button" onclick="takeScreenshot()">Screenshot</button>
-    </div>
-    <div class="award-ceremony">
-        <div class="podium">
-            <div class="second-place">
-                <div class="rank-circle">P2</div>
-                <div class="score">Score: 80</div>
-            </div>
-            <div class="first-place">
-                <div class="rank-circle">P1</div>
-                <div class="score">Score: 95</div>
-            </div>
-            <div class="third-place">
-                <div class="rank-circle">P3</div>
-                <div class="score">Score: 70</div>
-            </div>
-        </div>
-    </div>
-    <div class="celebration">
-        <!-- Add some celebratory animations or effects here -->
-        <h1>Congratulations!</h1>
-    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
-        // Function to take a screenshot of the FinalRank.html page
+        // 截图功能实现
         function takeScreenshot() {
             html2canvas(document.body).then(function (canvas) {
                 var link = document.createElement('a');
@@ -45,8 +18,59 @@
                 link.click();
             });
         }
+    </script>
+</head>
 
-        // Add celebratory animations/effects when the page is loaded
+<body>
+    <div>
+        <a href="/" class="index-btn button">Index</a>
+    </div>
+
+    <div>
+        <button class="screenshot-btn button" onclick="takeScreenshot()">Screenshot</button>
+    </div>
+
+    <div class="award-ceremony">
+        <div class="podium">
+            <div class="second-place">
+                <div class="rank-circle" id="finalrank_player2_name">P2</div>
+                <div class="score" id="finalrank_player2_score">Score: 80</div>
+            </div>
+            <div class="first-place">
+                <div class="rank-circle" id="finalrank_player1_name">P1</div>
+                <div class="score" id="finalrank_player1_score">Score: 95</div>
+            </div>
+            <div class="third-place">
+                <div class="rank-circle" id="finalrank_player3_name">P3</div>
+                <div class="score" id="finalrank_player3_score">Score: 70</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="celebration">
+        <!-- Add some celebratory animations or effects here -->
+        <h1>Congratulations!</h1>
+    </div>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var urlParams = new URLSearchParams(window.location.search);
+        var room_id = urlParams.get('room_id');
+        function RefreshRank() {
+            socket.emit("checkRankPlayers", room_id, function (res) {
+                $("#finalrank_player1_name").text(res["p1_name"]);
+                $("#finalrank_player1_score").text(res["p1_score"]);
+                $("#finalrank_player2_name").text(res["p2_name"]);
+                $("#finalrank_player2_score").text(res["p2_score"]);
+                $("#finalrank_player3_name").text(res["p3_name"]);
+                $("#finalrank_player3_score").text(res["p3_score"]);
+            });
+        }
+        RefreshRank();
+
+
+
+        // 当页面加载好后添加恭喜特效
         document.addEventListener('DOMContentLoaded', function () {
             var celebrationDiv = document.querySelector('.celebration');
             celebrationDiv.style.display = 'block';

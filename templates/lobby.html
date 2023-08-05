@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Lobby Page</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
+
 <body>
     <h1>Lobby Page</h1>
-    <button id="refresh-button" class="button" onclick="toLobby()">RefreshRooms</button>
     <div>
-        <p>
-            {{Rooms}}
-        </p>
+        <textarea id="room_data_show" readonly>
+            0
+        </textarea>
     </div>
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+        function RefreshRoomDataShow() {
+            socket.emit("refreshRoomDataShow", 1, function (res) {
+                $("#room_data_show").text(JSON.stringify(res, null, 2));
+            });
+        }
+        // 每隔一段时间调用函数，单位为ms
+        var interval = setInterval(RefreshRoomDataShow, 500);
+    </script>
 </body>
+
 </html>

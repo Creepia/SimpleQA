@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Simple Score Show</title>
+    <title>Final Score Show</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -17,14 +17,8 @@
     <h1>Q{{ qtn_order }} Result</h1>
     <p id="player_name">{{ name }}</p>
     <p id="player_score">{{ score }}</p>
-    <h2>Waiting for next question...</h2>
-    <script>
-        socket.on("toNextQuestion_res",()=>{
-            //alert("recieved toNextQuestion");
-            window.location.href = '/AnswerShow.html?room_id=' + room_id;
-        })
-        //var interval = setInterval(checkRoomStatus, 500);
-    </script>
+    <h2>You have finished the final question! You are No.{{rank}}!</h2>
+    <h3>Congratulaion for the rankers on the big screen!</h3>
 </body>
 
 </html>

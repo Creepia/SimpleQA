@@ -39,9 +39,23 @@ def index():
 def room_create():
     return render_template('RoomCreate.html')
 
-@app.route('/SimpleScoreShow.html')
-def simple_score_show():
-    return render_template('SimpleScoreShow.html')
+@app.route('/ScoreShow.html')
+def score_show():
+    room_id=request.args.get("room_id")
+    user_ip = request.remote_addr
+    i=0
+    for player in Rooms[room_id]["players"]:
+        if(player["ip"]==user_ip):
+            name=player["name"]
+            score=player["score"]
+            rank=i
+            break
+        i+=1
+    # 如果还没完成最后一题，则玩家方跳转到SimpleScoreShow.html；如果已经完成最后一题，则玩家方跳转到FinalScoreShow.html
+    if(Rooms[room_id]["status"]<len(Rooms[room_id]["questions"])-1):
+        return render_template('SimpleScoreShow.html',qtn_order=Rooms[room_id]["status"],name=name,score=score)
+    else:
+        return render_template('FinalScoreShow.html',qtn_order=Rooms[room_id]["status"],name=name,score=score,rank=rank+1)
 
 @app.route('/QuestionShow.html')
 def qsn_start_game():
@@ -78,8 +92,9 @@ def ans_start_game():
 @app.route('/Rank.html')
 def to_rank():
     room_id=request.args.get("room_id")
+    # 如果还没完成最后一题，则房主方跳转到SimpleRank.html；如果已经完成最后一题，则房主方跳转到FinalRank.html
     if(Rooms[room_id]["status"]<len(Rooms[room_id]["questions"])-1):
-        return render_template('SimpleRank.html',room_id=room_id)
+        return render_template('SimpleRank.html',room_id=room_id,qtn_order=Rooms[room_id]["status"])
     else:
         return render_template('FinalRank.html',room_id=room_id)
 
@@ -90,12 +105,6 @@ def room_join():
 @app.route('/Prestart.html')
 def prestart():
     return render_template('Prestart.html')
-
-'''@app.route('/FinalRank.html')
-def final_rank():
-    room_id=request.args.get("room_id")
-    return render_template('FinalRank.html',room_id=room_id)'''
-
 
 @app.route('/PreAnswer.html')
 def preanswer():
@@ -179,6 +188,10 @@ def getSecondsLeft(data):
     else:
         return 0
 
+@socketio.on("toNextQuestion")
+def toNextQuestion(room_id):
+    socketio.emit("toNextQuestion_res")
+
 @socketio.on('process_newroom')
 def process_newroom(data):
     # 取得房间id
@@ -199,6 +212,26 @@ def process_newroom(data):
     except Exception as e:
         # 客户端状态回传（待优化）
         return {'sucess': False,'error_msg':str(e)}
+
+@socketio.on("refreshRoomDataShow")
+def refreshRoomDataShow(data):
+    return Rooms
+
+@socketio.on("checkAnswerIfCorrect")
+def checkAnswerIfCorrect(data):
+    answer=data["chosen_answer"]
+    room_id=data["room_id"]
+    print(answer)
+    print(room_id)
+    qtn_order=Rooms[room_id]["status"]
+    real_ans=Rooms[room_id]["questions"][qtn_order]["answer"]
+    if(real_ans==answer):
+        user_ip = request.remote_addr
+        for player in Rooms[room_id]["players"]:
+            if(player["ip"]==user_ip):
+                player["score"]+=10
+                break
+    return(real_ans)
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0',debug=1)

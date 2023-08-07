@@ -4,6 +4,7 @@ from random import randint
 import json,time
 
 app = Flask(__name__)
+app.config["SECRET_KEY"]="korekoso_himituda"
 socketio = SocketIO(app)
 Rooms = {
     "000000":{
@@ -236,4 +237,4 @@ def checkAnswerIfCorrect(data):
 if __name__ == '__main__':
     # app.run(host='0.0.0.0',debug=1)
     # socketio.run(app, host='0.0.0.0', port=5000,debug=1)
-    socketio.run(app,debug=1)
+    socketio.run(app,host='0.0.0.0',port=80,debug=0)

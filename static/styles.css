@@ -5,18 +5,24 @@ body {
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 400%;
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    animation: simple_fade_in;
+    animation-duration: 2s;
 }
 
 .button {
     display: inline-block;
+    font-size: 30px;
     padding: 10px 20px;
     background-color: #ffb6c1;
-    border-radius: 5px;
     text-decoration: none;
-    font-size: 18px;
-    margin: 10px;
-    transition: background-color 0.3s;
+    margin: 1% 2%;
+    border-radius: 15px;
+    animation: simple_fade_in;
+    animation-duration: 2s;
 }
 
 .index-btn {
@@ -35,7 +41,7 @@ h1 {
     background-color: #FFB6C1;
 }
 
-.player-list-table{
+.player-list-table {
     margin-left: auto;
     margin-right: auto;
 }
@@ -47,8 +53,9 @@ h1 {
     font-size: 12px;
 }
 
-.input{
-    background-color: lightpink;
+.input {
+    animation: simple_fade_in;
+    animation-duration: 2s;
 }
 
 .error-message {
@@ -99,7 +106,8 @@ h1 {
     display: flex;
 }
 
-.second-place, .third-place {
+.second-place,
+.third-place {
     width: 100px;
     height: 200px;
     background-color: silver;
@@ -132,4 +140,16 @@ h1 {
 
 .celebration {
     display: none;
+}
+
+@keyframes simple_fade_in {
+    0% {
+        opacity: 0;
+        top:20px;
+    }
+
+    100% {
+        opacity: 1;
+        top:0px;
+    }
 }

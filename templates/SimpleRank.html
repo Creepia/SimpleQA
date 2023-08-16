@@ -12,7 +12,7 @@
         var room_id = urlParams.get('room_id');
         function toNextQuestion() {
             socket.emit("toNextQuestion",room_id);
-            window.location.href = 'QuestionShow.html?room_id=' + room_id;
+            window.location.href = 'QuestionShow?room_id=' + room_id;
         }
     </script>
 </head>

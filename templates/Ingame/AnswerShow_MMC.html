@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Answer Show</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Q{{qtn_order}} {{qtn}}</h1>
+        <h3>Timer: <span id="timer">15</span> seconds</h3>
+        <div id="answer-list" class="answer-list">
+            
+        </div>
+    </div>
+    <input id="MultiChooseButton" class="button">OK</input>
+    <script>
+
+
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var urlParams = new URLSearchParams(window.location.search);
+        var room_id = urlParams.get('room_id');
+
+        function RefreshTimer() {
+            //将room_id传到后端，再在后端计算剩余秒数传回
+            socket.emit("getSecondsLeft", { "room_id": room_id }, function (left_seconds) {
+                $("#timer").text(left_seconds);
+                //秒数为0时跳转到SimpleScoreShow.html
+                if (left_seconds <= 0) {
+                    clearInterval(interval);
+                    window.location.href = 'ScoreShow?room_id=' + room_id;
+                }
+            });
+        }
+
+
+        
+
+        function displayAnswers() {
+            socket.emit("checkAnswersData", room_id, function (res) {
+                var answer_list = res["answer_list"];
+                var option_list = res["option_list"];
+                var GreekOrder = ["Α", "B", "Γ", "Δ", "E", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ"];
+
+                var $answer_table=$("<table></table>");
+
+                console.log("ready to for loop")
+                for (var i = 0; i < option_list.length; i++) {
+                    var $row=$("<tr></tr>");
+                    var $orderCell=$("<td type='checkbox' name='answers' value='"+GreekOrder[i]+"' class='option-letter'></td>");
+                    var $contentCell = $("<td class='option-text'></td>");
+                    $row.append($orderCell);
+                    $row.append($contentCell);
+                    $answer_table.append($row);
+                    $orderCell.text(GreekOrder[i]);
+                    $contentCell.text(option_list[i]);
+                }
+                //将创建好的整个table挂载到div上
+            $("#answer-list").append($answer_table);
+            });
+
+        }
+        $("#answer-list").on("click",".option-letter",function(){
+            GreekToRoman={"Α":"A", "B":"B", "Γ":"G", "Δ":"D", "E":"E", "Ζ":"Z", "Η":"H", "Θ":"Q", "Ι":"I", "Κ":"K", "Λ":"L"};
+            console.log("pressed button");
+            chosen_answer=GreekToRoman[$(this).text()];
+            
+        })
+        function pressedMultiOKButton(){
+            socket.emit("checkMultiAnswersIfCorrect", { "room_id": room_id, "chosen_answers": chosen_answer }, function (real_answer) {
+                $(".answer-option").css({ "display": "none" })
+            });
+        }
+
+        displayAnswers();
+        // 每隔一段时间调用函数，单位为ms
+        var interval = setInterval(RefreshTimer, 100);
+
+    </script>
+</body>
+
+</html>

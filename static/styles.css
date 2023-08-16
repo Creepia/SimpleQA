@@ -142,6 +142,11 @@ h1 {
     display: none;
 }
 
+.answer-table{
+    align-items: center;
+    margin:0 auto;
+}
+
 @keyframes simple_fade_in {
     0% {
         opacity: 0;

@@ -17,7 +17,7 @@
                 if (res["room_exists"]) {
                     name_group.style.display = 'block';
                     if (res["isReady"]) {
-                        window.location.href = 'PreAnswer.html?room_id=' + roomId;
+                        window.location.href = 'PreAnswer?room_id=' + roomId;
                     }
                 } else {
                     // 如果房间不存在，隐藏Name输入框

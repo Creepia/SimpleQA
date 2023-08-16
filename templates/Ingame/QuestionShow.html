@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Answer Show</title>
+    <title>Question Show</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
+
 <body>
     <div class="container">
         <h1>Q{{qtn_order}} {{qtn}}</h1>
+        <p class="small-text">Single Select</p>
         <h3>Timer: <span id="timer">15</span> seconds</h3>
         <div class="answer-option">
-            <button id="option-A" class="option-letter" onclick="pressedAnswerButton()">A</button>
+            <p class="option-letter">A</p>
+            <p class="option-text">{{ opt[0] }}</p>
         </div>
         <div class="answer-option">
-            <button id="option-B" class="option-letter" onclick="pressedAnswerButton()">B</button>
+            <p class="option-letter">B</p>
+            <p class="option-text">{{ opt[1] }}</p>
         </div>
         <div class="answer-option">
-            <button id="option-C" class="option-letter" onclick="pressedAnswerButton()">Γ</button>
+            <p class="option-letter">Γ</p>
+            <p class="option-text">{{ opt[2] }}</p>
         </div>
         <div class="answer-option">
-            <button id="option-D" class="option-letter" onclick="pressedAnswerButton()">Δ</button>
+            <p class="option-letter">Δ</p>
+            <p class="option-text">{{ opt[3] }}</p>
         </div>
     </div>
     <script>
@@ -32,26 +38,22 @@
         function RefreshTimer() {
             //将room_id传到后端，再在后端计算剩余秒数传回
             socket.emit("getSecondsLeft", { "room_id": room_id }, function (left_seconds) {
-                $("#timer").text(left_seconds);
-                //秒数为0时跳转到SimpleScoreShow.html
+                document.getElementById('timer').textContent = left_seconds;
+                //秒数为0时跳转到SimpleRank
                 if (left_seconds <= 0) {
                     clearInterval(interval);
-                    window.location.href = 'ScoreShow.html?room_id=' + room_id;
+                    window.location.href = 'Rank?room_id=' + room_id;
                 }
             });
         }
 
-        function pressedAnswerButton(){
-            button_id=event.target.id;
-            chosen_answer=button_id.slice(7,8);
-            socket.emit("checkAnswerIfCorrect",{"room_id":room_id,"chosen_answer":chosen_answer},function(real_answer){
-                $(".answer-option").css({"display":"none"})
-            });
-        }
+        //一打开问题后端就记录时间
+        socket.emit("newQuestion", room_id);
 
         // 每隔一段时间调用函数，单位为ms
         var interval = setInterval(RefreshTimer, 100);
        
     </script>
 </body>
+
 </html>

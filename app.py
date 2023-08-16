@@ -21,13 +21,19 @@ Rooms = {
                 "options": ["Paris", "London", "Rome", "Madrid"],
                 "answer": "A"
             },
+            {
+                "type": "MMC",
+                "question": "Which colors are primary colors? (Select all that apply)",
+                "options": ["Red", "Green", "Blue", "Yellow"],
+                "answer": ["A", "C", "D"]
+            }
         ],
         "status":-1,
         "timer":0
     }
 }
 
-@app.route('/lobby.html')
+@app.route('/lobby')
 def lobby():
     return render_template('lobby.html', Rooms=Rooms)
 
@@ -36,11 +42,11 @@ def index():
     user_ip = request.remote_addr
     return render_template('index.html',user_ip=user_ip)
 
-@app.route('/RoomCreate.html')
+@app.route('/RoomCreate')
 def room_create():
     return render_template('RoomCreate.html')
 
-@app.route('/ScoreShow.html')
+@app.route('/ScoreShow')
 def score_show():
     room_id=request.args.get("room_id")
     user_ip = request.remote_addr
@@ -58,25 +64,29 @@ def score_show():
     else:
         return render_template('FinalScoreShow.html',qtn_order=Rooms[room_id]["status"],name=name,score=score,rank=rank+1)
 
-@app.route('/QuestionShow.html')
+@app.route('/QuestionShow')
 def qsn_start_game():
     room_id=request.args.get("room_id")
     if(room_id in Rooms):
         number_of_questions=len(Rooms[room_id]["questions"])
         # 展示第一个问题时，status==0
         if(Rooms[room_id]["status"]<number_of_questions-1):
-           Rooms[room_id]["status"]+=1
-           qtn_order=Rooms[room_id]["status"]
-           if(Rooms[room_id]["questions"][qtn_order]["type"]=="SMC"):
+            Rooms[room_id]["status"]+=1
+            qtn_order=Rooms[room_id]["status"]
+            if(Rooms[room_id]["questions"][qtn_order]["type"]=="SMC"):
                 qtn=Rooms[room_id]["questions"][qtn_order]["question"]
                 opt=Rooms[room_id]["questions"][qtn_order]["options"]
                 ans=Rooms[room_id]["questions"][qtn_order]["answer"]
-                
-        return render_template('QuestionShow.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+                return render_template('Ingame/QuestionShow_SMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+            elif(Rooms[room_id]["questions"][qtn_order]["type"]=="MMC"):
+                qtn=Rooms[room_id]["questions"][qtn_order]["question"]
+                opt=Rooms[room_id]["questions"][qtn_order]["options"]
+                ans=Rooms[room_id]["questions"][qtn_order]["answer"]
+                return render_template('Ingame/QuestionShow_MMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
     else:
-        return render_template('QuestionShow.html')
+        return render_template('Ingame/QuestionShow.html')
 
-@app.route('/AnswerShow.html')
+@app.route('/AnswerShow')
 def ans_start_game():
     room_id=request.args.get("room_id")
     if(room_id in Rooms):
@@ -86,11 +96,16 @@ def ans_start_game():
             qtn=Rooms[room_id]["questions"][qtn_order]["question"]
             opt=Rooms[room_id]["questions"][qtn_order]["options"]
             ans=Rooms[room_id]["questions"][qtn_order]["answer"]
-        return render_template('AnswerShow.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+            return render_template('Ingame/AnswerShow_SMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+        elif(Rooms[room_id]["questions"][qtn_order]["type"]=="MMC"):
+            qtn=Rooms[room_id]["questions"][qtn_order]["question"]
+            opt=Rooms[room_id]["questions"][qtn_order]["options"]
+            ans=Rooms[room_id]["questions"][qtn_order]["answer"]
+            return render_template('Ingame/AnswerShow_MMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
     else:
-        return render_template('AnswerShow.html')
+        return render_template('Ingame/AnswerShow.html')
 
-@app.route('/Rank.html')
+@app.route('/Rank')
 def to_rank():
     room_id=request.args.get("room_id")
     # 如果还没完成最后一题，则房主方跳转到SimpleRank.html；如果已经完成最后一题，则房主方跳转到FinalRank.html
@@ -99,15 +114,15 @@ def to_rank():
     else:
         return render_template('FinalRank.html',room_id=room_id)
 
-@app.route('/RoomJoin.html')
+@app.route('/RoomJoin')
 def room_join():
     return render_template('RoomJoin.html')
 
-@app.route('/Prestart.html')
+@app.route('/Prestart')
 def prestart():
     return render_template('Prestart.html')
 
-@app.route('/PreAnswer.html')
+@app.route('/PreAnswer')
 def preanswer():
     return render_template('PreAnswer.html')
 
@@ -233,6 +248,31 @@ def checkAnswerIfCorrect(data):
                 player["score"]+=10
                 break
     return(real_ans)
+
+@socketio.on("checkMultiAnswersIfCorrect")
+def checkAnswerIfCorrect(data):
+    answers=data["chosen_answers"]
+    room_id=data["room_id"]
+    print(answers)
+    print(room_id)
+    qtn_order=Rooms[room_id]["status"]
+    real_ans=Rooms[room_id]["questions"][qtn_order]["answer"]
+    if(real_ans==answers):
+        user_ip = request.remote_addr
+        for player in Rooms[room_id]["players"]:
+            if(player["ip"]==user_ip):
+                player["score"]+=10
+                break
+    return(real_ans)
+
+@socketio.on("checkAnswersData")
+def checkAnswerIfCorrect(room_id):
+    qtn_order=Rooms[room_id]["status"]
+    answer_list=Rooms[room_id]["questions"][qtn_order]["answer"]
+    option_list=Rooms[room_id]["questions"][qtn_order]["options"]
+    data={"answer_list":answer_list,"option_list":option_list}
+    print(data)
+    return(data)
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0',debug=1)

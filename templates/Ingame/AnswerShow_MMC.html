@@ -17,7 +17,7 @@
             
         </div>
     </div>
-    <input id="MultiChooseButton" class="button">OK</input>
+    <button id="MultiChooseButton" class="button" onclick="pressedMultiOKButton()">OK</input>
     <script>
 
 
@@ -51,7 +51,7 @@
                 console.log("ready to for loop")
                 for (var i = 0; i < option_list.length; i++) {
                     var $row=$("<tr></tr>");
-                    var $orderCell=$("<td type='checkbox' name='answers' value='"+GreekOrder[i]+"' class='option-letter'></td>");
+                    var $orderCell=$("<td type='checkbox' name='answers' value='"+GreekOrder[i]+"' class='option-letter' id='option-letter-"+GreekOrder[i]+"'></td>");
                     var $contentCell = $("<td class='option-text'></td>");
                     $row.append($orderCell);
                     $row.append($contentCell);
@@ -68,11 +68,14 @@
             GreekToRoman={"Α":"A", "B":"B", "Γ":"G", "Δ":"D", "E":"E", "Ζ":"Z", "Η":"H", "Θ":"Q", "Ι":"I", "Κ":"K", "Λ":"L"};
             console.log("pressed button");
             chosen_answer=GreekToRoman[$(this).text()];
+            console.log(chosen_answer);
+            $("#option-letter-"+chosen_answer).prop("checked",true);
             
         })
         function pressedMultiOKButton(){
             socket.emit("checkMultiAnswersIfCorrect", { "room_id": room_id, "chosen_answers": chosen_answer }, function (real_answer) {
-                $(".answer-option").css({ "display": "none" })
+                console.log($('input:checkbox:checked').val());
+                
             });
         }
 

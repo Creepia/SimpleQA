@@ -1,63 +1,98 @@
 [
- {
-                "type": "MMC",
-                "question": "Which colors are primary colors? (Select all that apply)",
-                "options": ["Red", "Green", "Blue", "Yellow","White"],
-                "answer": ["A", "G", "D"]
-            },
   {
-    "type": "SMC",
-    "question": "What is the capital of Japan?",
+    "type": "MMC",
+    "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
-      "Tokyo",
-      "Beijing",
-      "Seoul",
-      "New Delhi"
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow",
+      "White"
     ],
-    "answer": "A"
+    "answer": [
+      "A",
+      "G",
+      "D"
+    ]
   },
   {
-    "type": "SMC",
-    "question": "Which planet is known as the Red Planet?",
+    "type": "MMC",
+    "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
-      "Mars",
-      "Venus",
-      "Jupiter",
-      "Saturn"
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow",
+      "White"
     ],
-    "answer": "A"
+    "answer": [
+      "A",
+      "G",
+      "D"
+    ]
   },
   {
-    "type": "SMC",
-    "question": "What is the chemical symbol for oxygen?",
+    "type": "MMC",
+    "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
-      "O2",
-      "H2O",
-      "CO2",
-      "NaCl"
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow",
+      "White"
     ],
-    "answer": "A"
+    "answer": [
+      "A",
+      "G",
+      "D"
+    ]
   },
   {
-    "type": "SMC",
-    "question": "Which famous scientist developed the theory of relativity?",
+    "type": "MMC",
+    "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
-      "Isaac Newton",
-      "Albert Einstein",
-      "Galileo Galilei",
-      "Nikola Tesla"
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow",
+      "White"
     ],
-    "answer": "B"
+    "answer": [
+      "A",
+      "G",
+      "D"
+    ]
   },
   {
-    "type": "SMC",
-    "question": "Which is the largest mammal on Earth?",
+    "type": "MMC",
+    "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
-      "Elephant",
-      "Blue Whale",
-      "Giraffe",
-      "Hippopotamus"
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow",
+      "White"
     ],
-    "answer": "B"
+    "answer": [
+      "A",
+      "G",
+      "D"
+    ]
+  },
+  {
+    "type": "MMC",
+    "question": "Which colors are primary colors? (Select all that apply)",
+    "options": [
+      "Red",
+      "Green",
+      "Blue",
+      "Yellow",
+      "White"
+    ],
+    "answer": [
+      "A",
+      "G",
+      "D"
+    ]
   }
 ]

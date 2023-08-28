@@ -16,12 +16,14 @@ Rooms = {
         ],
         "questions":[
             {
+                "showncode":"uno",
                 "type": "SMC",
                 "question": "What is the capital of France?",
                 "options": ["Paris", "London", "Rome", "Madrid"],
                 "answer": "A"
             },
             {
+                "showncode":"dois",
                 "type": "MMC",
                 "question": "Which colors are primary colors? (Select all that apply)",
                 "options": ["Red", "Green", "Blue", "Yellow"],
@@ -77,12 +79,16 @@ def qsn_start_game():
                 qtn=Rooms[room_id]["questions"][qtn_order]["question"]
                 opt=Rooms[room_id]["questions"][qtn_order]["options"]
                 ans=Rooms[room_id]["questions"][qtn_order]["answer"]
-                return render_template('Ingame/QuestionShow_SMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+                return render_template('Ingame/QuestionShow_SMC.html',showncode=Rooms[room_id]["questions"][qtn_order]["showncode"],qtn=qtn,opt=opt,ans=ans)
             elif(Rooms[room_id]["questions"][qtn_order]["type"]=="MMC"):
                 qtn=Rooms[room_id]["questions"][qtn_order]["question"]
                 opt=Rooms[room_id]["questions"][qtn_order]["options"]
                 ans=Rooms[room_id]["questions"][qtn_order]["answer"]
-                return render_template('Ingame/QuestionShow_MMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+                return render_template('Ingame/QuestionShow_MMC.html',showncode=Rooms[room_id]["questions"][qtn_order]["showncode"],qtn=qtn,opt=opt,ans=ans)
+            elif(Rooms[room_id]["questions"][qtn_order]["type"]=="YN"):
+                qtn=Rooms[room_id]["questions"][qtn_order]["question"]
+                ans=Rooms[room_id]["questions"][qtn_order]["answer"]
+                return render_template('Ingame/QuestionShow_YN.html',showncode=Rooms[room_id]["questions"][qtn_order]["showncode"],qtn=qtn,ans=ans)
     else:
         return render_template('Ingame/QuestionShow.html')
 
@@ -96,12 +102,16 @@ def ans_start_game():
             qtn=Rooms[room_id]["questions"][qtn_order]["question"]
             opt=Rooms[room_id]["questions"][qtn_order]["options"]
             ans=Rooms[room_id]["questions"][qtn_order]["answer"]
-            return render_template('Ingame/AnswerShow_SMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+            return render_template('Ingame/AnswerShow_SMC.html',showncode=Rooms[room_id]["questions"][qtn_order]["showncode"],qtn=qtn,opt=opt,ans=ans)
         elif(Rooms[room_id]["questions"][qtn_order]["type"]=="MMC"):
             qtn=Rooms[room_id]["questions"][qtn_order]["question"]
             opt=Rooms[room_id]["questions"][qtn_order]["options"]
             ans=Rooms[room_id]["questions"][qtn_order]["answer"]
-            return render_template('Ingame/AnswerShow_MMC.html',qtn_order=qtn_order,qtn=qtn,opt=opt,ans=ans)
+            return render_template('Ingame/AnswerShow_MMC.html',showncode=Rooms[room_id]["questions"][qtn_order]["showncode"],qtn=qtn,opt=opt,ans=ans)
+        elif(Rooms[room_id]["questions"][qtn_order]["type"]=="YN"):
+            qtn=Rooms[room_id]["questions"][qtn_order]["question"]
+            ans=Rooms[room_id]["questions"][qtn_order]["answer"]
+            return render_template('Ingame/AnswerShow_YN.html',showncode=Rooms[room_id]["questions"][qtn_order]["showncode"],qtn=qtn,ans=ans)
     else:
         return render_template('Ingame/AnswerShow.html')
 

@@ -1,5 +1,6 @@
 [
   {
+    "showncode":"uno",
     "type": "SMC",
     "question": "What is the capital of France?",
     "options": [
@@ -11,6 +12,7 @@
     "answer": "A"
   },
   {
+    "showncode":"uno",
     "type": "SMC",
     "question": "What is the capital of Japan?",
     "options": [
@@ -22,6 +24,7 @@
     "answer": "A"
   },
   {
+    "showncode":"uno",
     "type": "SMC",
     "question": "Which planet is known as the Red Planet?",
     "options": [
@@ -33,6 +36,7 @@
     "answer": "A"
   },
   {
+    "showncode":"uno",
     "type": "SMC",
     "question": "What is the chemical symbol for oxygen?",
     "options": [
@@ -44,6 +48,7 @@
     "answer": "A"
   },
   {
+    "showncode":"uno",
     "type": "SMC",
     "question": "Which famous scientist developed the theory of relativity?",
     "options": [
@@ -55,6 +60,7 @@
     "answer": "B"
   },
   {
+    "showncode":"uno",
     "type": "SMC",
     "question": "Which is the largest mammal on Earth?",
     "options": [

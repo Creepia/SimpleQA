@@ -6,17 +6,13 @@
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
-    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
 <body>
     <div class="container">
         <h1>{{showncode}} {{qtn}}</h1>
-        <p class="small-text">Multi Select</p>
+        <p class="small-text">Yes-No</p>
         <h3>Timer: <span id="timer">15</span> seconds</h3>
-        <div id="answer-list">
-            
-        </div>
     </div>
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -38,35 +34,9 @@
         //一打开问题后端就记录时间
         socket.emit("newQuestion", room_id);
 
-        function displayAnswers() {
-            socket.emit("checkAnswersData", room_id, function (res) {
-                var answer_list = res["answer_list"];
-                var option_list = res["option_list"];
-                var GreekOrder = ["Α", "B", "Γ", "Δ", "E", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ"];
-
-                var $answer_table=$("<table class='answer-table'></table>");
-
-                console.log("ready to for loop")
-                for (var i = 0; i < option_list.length; i++) {
-                    var $row=$("<tr></tr>");
-                    var $orderCell=$("<td class='option-letter'></td>");
-                    var $contentCell = $("<td class='option-text'></td>");
-                    $row.append($orderCell);
-                    $row.append($contentCell);
-                    $answer_table.append($row);
-                    $orderCell.text(GreekOrder[i]);
-                    $contentCell.text(option_list[i]);
-                }
-                //将创建好的整个table挂载到div上
-            $("#answer-list").append($answer_table);
-            });
-
-        }
-        displayAnswers();
-
         // 每隔一段时间调用函数，单位为ms
         var interval = setInterval(RefreshTimer, 100);
-
+       
     </script>
 </body>
 

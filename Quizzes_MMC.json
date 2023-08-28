@@ -1,5 +1,6 @@
 [
   {
+    "showncode":"uno",
     "type": "MMC",
     "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
@@ -16,6 +17,7 @@
     ]
   },
   {
+    "showncode":"uno",
     "type": "MMC",
     "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
@@ -32,6 +34,7 @@
     ]
   },
   {
+    "showncode":"uno",
     "type": "MMC",
     "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
@@ -48,6 +51,7 @@
     ]
   },
   {
+    "showncode":"uno",
     "type": "MMC",
     "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
@@ -64,6 +68,7 @@
     ]
   },
   {
+    "showncode":"uno",
     "type": "MMC",
     "question": "Which colors are primary colors? (Select all that apply)",
     "options": [
@@ -80,6 +85,7 @@
     ]
   },
   {
+    "showncode":"uno",
     "type": "MMC",
     "question": "Which colors are primary colors? (Select all that apply)",
     "options": [

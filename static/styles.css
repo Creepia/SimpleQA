@@ -77,16 +77,39 @@ h1 {
     justify-content: center;
 }
 
+
 .option-letter {
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-    background-color: lightpink;
-    border: none;
-    border-radius: 50%;
-    margin-right: 10px;
-    cursor: pointer;
+    margin: 2% 0;
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 40px;
+    background: #0099ff;
+    padding: 12% 12% 12% 12%;
+    text-decoration: none;
 }
+
+
+.answer-grid {
+
+    margin: 10px 0;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 50%;
+    gap: 0% 10%;
+    grid-auto-flow: row;
+    grid-template-areas:
+        "Y-Area N-Area";
+
+}
+
+.YN-answers-grid {
+    margin: auto;
+}
+
+
+
 
 .option-text {
     font-size: 20px;
@@ -143,19 +166,19 @@ h1 {
     display: none;
 }
 
-.answer-table{
+.answer-table {
     align-items: center;
-    margin:0 auto;
+    margin: 0 auto;
 }
 
 @keyframes simple_fade_in {
     0% {
         opacity: 0;
-        top:20px;
+        top: 20px;
     }
 
     100% {
         opacity: 1;
-        top:0px;
+        top: 0px;
     }
 }

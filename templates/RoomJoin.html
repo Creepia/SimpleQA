@@ -17,6 +17,7 @@
                 if (res["room_exists"]) {
                     name_group.style.display = 'block';
                     if (res["isReady"]) {
+                        sessionStorage.setItem('user_id', name);
                         window.location.href = 'PreAnswer?room_id=' + roomId;
                     }
                 } else {

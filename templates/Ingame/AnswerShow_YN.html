@@ -14,8 +14,8 @@
         <h1>{{showncode}} {{qtn}}</h1>
         <h3>Timer: <span id="timer">15</span> seconds</h3>
         <div class="YN-answers-grid">
-            <button id="option-Y" class="option-letter" onclick="pressedAnswerButton()">Y</button>
-            <button id="option-N" class="option-letter" onclick="pressedAnswerButton()">N</button>
+            <button id="option-Y" class="option-letter-big" onclick="pressedAnswerButton()">Y</button>
+            <button id="option-N" class="option-letter-big" onclick="pressedAnswerButton()">N</button>
         </div>
     </div>
     <script>
@@ -38,9 +38,9 @@
         function pressedAnswerButton() {
             button_id = event.target.id;
             chosen_answer = button_id.slice(7, 8);
-            socket.emit("checkAnswerIfCorrect", { "room_id": room_id, "chosen_answer": chosen_answer }, function (real_answer) {
-                $(".option-letter").css({"display":"none"});
-                $('#' + button_id).css({ "display": "block","opacity":"0.5"});
+            socket.emit("checkAnswerIfCorrect", { "room_id": room_id, "chosen_answer": chosen_answer ,"user_id":sessionStorage.getItem("user_id")}, function (real_answer) {
+                $(".option-letter-big").css({"display":"none"});
+                // $('#' + button_id).css({ "display": "block","opacity":"0.5"});
                 $('#' + button_id).attr({"onclick":"none"});
             });
         }

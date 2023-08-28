@@ -78,7 +78,7 @@ h1 {
 }
 
 
-.option-letter {
+.option-letter-big {
     margin: 2% 0;
     -webkit-border-radius: 8;
     -moz-border-radius: 8;
@@ -90,6 +90,17 @@ h1 {
     text-decoration: none;
 }
 
+.option-letter {
+    margin: 2px 0;
+    -webkit-border-radius: 4;
+    -moz-border-radius: 4;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 30px;
+    background: #0099ff;
+    padding: 2px 10px 2px 10px;
+    text-decoration: none;
+}
 
 .answer-grid {
 

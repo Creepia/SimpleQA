@@ -178,13 +178,16 @@ def checkRoomExists(data):
     if room_id in Rooms:
         user_name = data["name"]
         print(user_name)
-        if(user_name !=""):
-            # 进入回答第一个问题，加入玩家
-            user_ip = request.remote_addr
-            Rooms[room_id]["players"].append({"ip":user_ip,"name":user_name,"score":0})
-            return {'room_exists': True,'isReady':True}
-        else:
+        # 禁止user_name爲空或已被占用的玩家加入游戲
+        for p in Rooms[room_id]["players"]:
+            if (user_name in p["name"]):
+                return {'room_exists': True,'isReady':False}
+        if(user_name ==""):
             return {'room_exists': True,'isReady':False}
+        # 进入回答第一个问题，加入玩家
+        user_ip = request.remote_addr
+        Rooms[room_id]["players"].append({"ip":user_ip,"name":user_name,"score":0})
+        return {'room_exists': True,'isReady':True}
     else:
         return {'room_exists': False}
 

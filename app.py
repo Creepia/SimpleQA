@@ -3,6 +3,25 @@ from flask_socketio import SocketIO, emit,send,join_room,leave_room
 from random import randint
 import json,time
 
+class Player:
+    def __init__(self,name:str,ip:str,score:int):
+        self.name=name
+        self.ip=ip
+        self.score=score
+    
+
+class Room:
+    def __init__(self,room_id:str):
+        self.room_id:str=room_id
+        self.player_list=[]
+        self.question_set=[]
+        self.master_ip:str="0.0.0.0"
+        self.status:int=-1
+        self.timer:int:0
+    def AddPlayer(self,player:Player):
+        self.player_list.append(player)
+        
+
 app = Flask(__name__)
 app.config["SECRET_KEY"]="korekoso_himituda"
 socketio = SocketIO(app)

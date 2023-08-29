@@ -2,25 +2,25 @@
   {
     "showncode":"uno",
     "type": "YN",
-    "question": "Is the Earth round?",
+    "text": "Is the Earth round?",
     "answer": "Y"
   },
   {
     "showncode":"dois",
     "type": "YN",
-    "question": "Is the Earth flat?",
+    "text": "Is the Earth flat?",
     "answer": "N"
   },
   {
     "showncode":"tres",
     "type": "YN",
-    "question": "Is the Earth round?",
+    "text": "Is the Earth round?",
     "answer": "Y"
   },
   {
     "showncode":"quarte",
     "type": "YN",
-    "question": "Is the Earth round?",
+    "text": "Is the Earth round?",
     "answer": "Y"
   }
 ]

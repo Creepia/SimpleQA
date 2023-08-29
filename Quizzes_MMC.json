@@ -2,7 +2,7 @@
   {
     "showncode":"uno",
     "type": "MMC",
-    "question": "Which colors are primary colors? (Select all that apply)",
+    "text": "Which colors are primary colors? (Select all that apply)",
     "options": [
       "Red",
       "Green",
@@ -10,7 +10,7 @@
       "Yellow",
       "White"
     ],
-    "answer": [
+    "answers": [
       "A",
       "G",
       "D"
@@ -19,7 +19,7 @@
   {
     "showncode":"uno",
     "type": "MMC",
-    "question": "Which colors are primary colors? (Select all that apply)",
+    "text": "Which colors are primary colors? (Select all that apply)",
     "options": [
       "Red",
       "Green",
@@ -27,7 +27,7 @@
       "Yellow",
       "White"
     ],
-    "answer": [
+    "answers": [
       "A",
       "G",
       "D"
@@ -36,7 +36,7 @@
   {
     "showncode":"uno",
     "type": "MMC",
-    "question": "Which colors are primary colors? (Select all that apply)",
+    "text": "Which colors are primary colors? (Select all that apply)",
     "options": [
       "Red",
       "Green",
@@ -44,7 +44,7 @@
       "Yellow",
       "White"
     ],
-    "answer": [
+    "answers": [
       "A",
       "G",
       "D"
@@ -53,7 +53,7 @@
   {
     "showncode":"uno",
     "type": "MMC",
-    "question": "Which colors are primary colors? (Select all that apply)",
+    "text": "Which colors are primary colors? (Select all that apply)",
     "options": [
       "Red",
       "Green",
@@ -61,7 +61,7 @@
       "Yellow",
       "White"
     ],
-    "answer": [
+    "answers": [
       "A",
       "G",
       "D"
@@ -70,7 +70,7 @@
   {
     "showncode":"uno",
     "type": "MMC",
-    "question": "Which colors are primary colors? (Select all that apply)",
+    "text": "Which colors are primary colors? (Select all that apply)",
     "options": [
       "Red",
       "Green",
@@ -78,7 +78,7 @@
       "Yellow",
       "White"
     ],
-    "answer": [
+    "answers": [
       "A",
       "G",
       "D"
@@ -87,7 +87,7 @@
   {
     "showncode":"uno",
     "type": "MMC",
-    "question": "Which colors are primary colors? (Select all that apply)",
+    "text": "Which colors are primary colors? (Select all that apply)",
     "options": [
       "Red",
       "Green",
@@ -95,7 +95,7 @@
       "Yellow",
       "White"
     ],
-    "answer": [
+    "answers": [
       "A",
       "G",
       "D"

@@ -2,73 +2,79 @@
   {
     "showncode":"uno",
     "type": "SMC",
-    "question": "What is the capital of France?",
+    "text": "What is the capital of France?",
     "options": [
       "Paris",
       "London",
       "Rome",
       "Madrid"
     ],
-    "answer": "A"
+    "answer": "A",
+    "remain":15
   },
   {
     "showncode":"uno",
     "type": "SMC",
-    "question": "What is the capital of Japan?",
+    "text": "What is the capital of Japan?",
     "options": [
       "Tokyo",
       "Beijing",
       "Seoul",
       "New Delhi"
     ],
-    "answer": "A"
+    "answer": "A",
+    "remain":30
   },
   {
     "showncode":"uno",
     "type": "SMC",
-    "question": "Which planet is known as the Red Planet?",
+    "text": "Which planet is known as the Red Planet?",
     "options": [
       "Mars",
       "Venus",
       "Jupiter",
       "Saturn"
     ],
-    "answer": "A"
+    "answer": "A",
+    "remain":15
   },
   {
     "showncode":"uno",
     "type": "SMC",
-    "question": "What is the chemical symbol for oxygen?",
+    "text": "What is the chemical symbol for oxygen?",
     "options": [
       "O2",
       "H2O",
       "CO2",
       "NaCl"
     ],
-    "answer": "A"
+    "answer": "A",
+    "remain":20
   },
   {
     "showncode":"uno",
     "type": "SMC",
-    "question": "Which famous scientist developed the theory of relativity?",
+    "text": "Which famous scientist developed the theory of relativity?",
     "options": [
       "Isaac Newton",
       "Albert Einstein",
       "Galileo Galilei",
       "Nikola Tesla"
     ],
-    "answer": "B"
+    "answer": "B",
+    "remain":15
   },
   {
     "showncode":"uno",
     "type": "SMC",
-    "question": "Which is the largest mammal on Earth?",
+    "text": "Which is the largest mammal on Earth?",
     "options": [
       "Elephant",
       "Blue Whale",
       "Giraffe",
       "Hippopotamus"
     ],
-    "answer": "B"
+    "answer": "B",
+    "remain":15
   }
 ]

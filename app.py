@@ -37,71 +37,81 @@ class Question:
             text:显示文本，如"Which is the biggest mammal?".\n
         另外有remain参数为该页面的停留时间，时间到达将跳过这个页面，默认为15，单位为s.
         '''
-        self.type = type
-        self.showncode = showncode
-        self.text = text
-        self.remain = remain
+        self.__type = type
+        self.__showncode = showncode
+        self.__text = text
+        self.__remain = remain
 
     def getType(self) -> str:
-        return (self.type)
+        return (self.__type)
 
     def getShowncode(self) -> str:
-        return (self.showncode)
+        return (self.__showncode)
 
     def getText(self) -> str:
-        return (self.text)
+        return (self.__text)
 
     def getRemain(self) -> int:
-        return (self.remain)
+        return (self.__remain)
 
 
 class SMC(Question):
     def __init__(self, type: str, showncode: str, text: str, remain: int, options: list, answer: str):
         super().__init__(type, showncode, text, remain)
-        self.options = options
-        self.answer = answer
-    def getOptions(self)->list:
-        return(self.options)
-    def getAnswer(self)->str:
-        return(self.answer)
-    
+        self.__options = options
+        self.__answer = answer
+
+    def getOptions(self) -> list:
+        return (self.__options)
+
+    def getAnswer(self) -> str:
+        return (self.__answer)
+
+
 class MMC(Question):
     def __init__(self, type: str, showncode: str, text: str, remain: int, options: list, answers: list):
         super().__init__(type, showncode, text, remain)
-        self.options = options
-        self.answers = answers
-    def getOptions(self)->list:
-        return(self.options)
-    def getAnswer(self)->list:
-        return(self.answers)
+        self.__options = options
+        self.__answers = answers
+
+    def getOptions(self) -> list:
+        return (self.__options)
+
+    def getAnswers(self) -> list:
+        return (self.__answers)
+
 
 class YN(Question):
     def __init__(self, type: str, showncode: str, text: str, remain: int, answer: str):
         super().__init__(type, showncode, text, remain)
-        self.answer = answer
-    def getAnswer(self)->str:
-        return(self.answer)
-    
+        self.__answer = answer
+
+    def getAnswer(self) -> str:
+        return (self.__answer)
+
+
 class STAT(Question):
     def __init__(self, type: str, showncode: str, text: str, remain: int, state: str):
         super().__init__(type, showncode, text, remain)
         self.state = state
-    def getAnswer(self)->str:
-        return(self.state)
+
+    def getAnswer(self) -> str:
+        return (self.state)
+
 
 class Room:
     def __init__(self, room_id: str, master_ip: str = "0.0.0.0"):
         self.__room_id = room_id
-        self.__player_list = []
-        self.__question_list = []
+        self.__player_list: list[Player] = []
+        self.__question_list: list[Question] = []
         self.__master_ip = master_ip
-        self.status = -1
-        self.timer = 0
+        self.__status = -1
+        self.__timer = 0
 
     def getId(self) -> str:
         return (self.__room_id)
 
-    def getPlayers(self) -> list:
+    def getPlayers(self) -> list[Player]:
         return (self.__player_list)
 
     def hasPlayerByName(self, player_name: str) -> bool:
@@ -117,7 +127,7 @@ class Room:
         成功添加玩家後返回0，否则返回-1.
         '''
         if (self.hasPlayerByName(player.getName()) == False):
-            self.player_list.append(player)
+            self.__player_list.append(player)
             return (0)
         return (-1)
 
@@ -125,66 +135,113 @@ class Room:
         try:
             for inlist_player in self.__player_list:
                 if (inlist_player.getName() == player_name):
-                    self.player_list.remove(inlist_player)
+                    self.__player_list.remove(inlist_player)
         except:
             raise KeyError("移除玩家失敗")
 
-    def getQuestions(self) -> list:
+    def sortPlayers(self) -> None:
+        """
+        将房间中的玩家按分数由大到小原地排序.
+        """
+        self.__player_list.sort(
+            key=lambda player: player.getScore(), reverse=True)
+
+    def getQuestions(self) -> list[Question]:
         return (self.__question_list)
 
-    def setQuesions(self, question_list: list) -> None:
-        self.__question_list = question_list
+    def __addQuesion(self, question: dict) -> None:
+        self.__question_list.append(question)
+
+    def setQuestionsFromJson(self, json_file) -> None:
+        try:
+            data = json.loads(json_file)
+            for question in data:
+                if (question["type"] == "SMC"):
+                    self.__addQuesion(SMC(question["type"], question["showncode"], question["text"],
+                                      question["remain"], question["options"], question["answer"]))
+                elif (question["type"] == "MMC"):
+                    self.__addQuesion(MMC(question["type"], question["showncode"], question["text"],
+                                      question["remain"], question["options"], question["answers"]))
+                elif (question["type"] == "YN"):
+                    self.__addQuesion(
+                        YN(question["type"], question["showncode"], question["text"], question["remain"], question["answer"]))
+                elif (question["type"] == "STAT"):
+                    self.__addQuesion(STAT(
+                        question["type"], question["showncode"], question["text"], question["remain"], question["state"]))
+        except:
+            pass
+
+    def getCurrentQuestion(self) -> Question | SMC | MMC | YN | STAT:
+        if (self.__status > -1 and self.__status < len(self.__question_list)):
+            return (self.__question_list[self.__status])
 
     def getMasterIp(self) -> str:
         return (self.__master_ip)
 
     def getStatus(self) -> int:
-        return (self.status)
+        return (self.__status)
 
     def incStatus(self, increment: int = 1) -> None:
-        self.status += increment
+        self.__status += increment
 
     def setStatus(self, number: int) -> None:
-        self.status = number
+        self.__status = number
 
     def getTimer(self) -> int:
-        return (self.timer)
+        return (self.__timer)
 
     def setTimer(self, number: int) -> None:
-        self.timer = number
+        self.__timer = number
 
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "korekoso_himituda"
 socketio = SocketIO(app)
-Rooms = {
-    "000000": {
-        "master": "123.123.123.123",
-        "players": [
-            {"name": 'Alex', "ip": '123.4.56.78', "score": 10},
-            {"name": 'Bob', "ip": '100.2.88.9', "score": 20},
-            {"name": 'Carol', "ip": '102.0.231.114', "score": 30}
-        ],
-        "questions": [
-            {
-                "showncode": "uno",
-                "type": "SMC",
-                "question": "What is the capital of France?",
-                "options": ["Paris", "London", "Rome", "Madrid"],
-                "answer": "A"
-            },
-            {
-                "showncode": "dois",
-                "type": "MMC",
-                "question": "Which colors are primary colors? (Select all that apply)",
-                "options": ["Red", "Green", "Blue", "Yellow"],
-                "answer": ["A", "C", "D"]
-            }
-        ],
-        "status": -1,
-        "timer": 0
-    }
-}
+# 房间"000000"为测试房间
+Rooms = {"000000": Room("000000")}
+Rooms["000000"].setQuestionsFromJson('''
+[
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of France?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Madrid"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of Japan?",
+    "options": [
+      "Tokyo",
+      "Beijing",
+      "Seoul",
+      "New Delhi"
+    ],
+    "answer": "A",
+    "remain":30
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which planet is known as the Red Planet?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Saturn"
+    ],
+    "answer": "A",
+    "remain":15
+  }
+]
+''')
 
 
 @app.route('/lobby')
@@ -203,48 +260,36 @@ def room_create():
     return render_template('RoomCreate.html')
 
 
-@app.route('/ScoreShow')
-def score_show():
-    room_id = request.args.get("room_id")
-    user_ip = request.remote_addr
-    i = 0
-    for player in Rooms[room_id]["players"]:
-        if (player["ip"] == user_ip):
-            name = player["name"]
-            score = player["score"]
-            rank = i
-            break
-        i += 1
-    # 如果还没完成最后一题，则玩家方跳转到SimpleScoreShow.html；如果已经完成最后一题，则玩家方跳转到FinalScoreShow.html
-    if (Rooms[room_id]["status"] < len(Rooms[room_id]["questions"])-1):
-        return render_template('SimpleScoreShow.html', qtn_order=Rooms[room_id]["status"], name=name, score=score)
-    else:
-        return render_template('FinalScoreShow.html', qtn_order=Rooms[room_id]["status"], name=name, score=score, rank=rank+1)
-
-
 @app.route('/QuestionShow')
 def qsn_start_game():
     room_id = request.args.get("room_id")
     if (room_id in Rooms):
-        number_of_questions = len(Rooms[room_id]["questions"])
+        room = Rooms[room_id]
+        cq = room.getCurrentQuestion()
         # 展示第一个问题时，status==0
-        if (Rooms[room_id]["status"] < number_of_questions-1):
-            Rooms[room_id]["status"] += 1
-            qtn_order = Rooms[room_id]["status"]
-            if (Rooms[room_id]["questions"][qtn_order]["type"] == "SMC"):
-                qtn = Rooms[room_id]["questions"][qtn_order]["question"]
-                opt = Rooms[room_id]["questions"][qtn_order]["options"]
-                ans = Rooms[room_id]["questions"][qtn_order]["answer"]
-                return render_template('Ingame/QuestionShow_SMC.html', showncode=Rooms[room_id]["questions"][qtn_order]["showncode"], qtn=qtn, opt=opt, ans=ans)
-            elif (Rooms[room_id]["questions"][qtn_order]["type"] == "MMC"):
-                qtn = Rooms[room_id]["questions"][qtn_order]["question"]
-                opt = Rooms[room_id]["questions"][qtn_order]["options"]
-                ans = Rooms[room_id]["questions"][qtn_order]["answer"]
-                return render_template('Ingame/QuestionShow_MMC.html', showncode=Rooms[room_id]["questions"][qtn_order]["showncode"], qtn=qtn, opt=opt, ans=ans)
-            elif (Rooms[room_id]["questions"][qtn_order]["type"] == "YN"):
-                qtn = Rooms[room_id]["questions"][qtn_order]["question"]
-                ans = Rooms[room_id]["questions"][qtn_order]["answer"]
-                return render_template('Ingame/QuestionShow_YN.html', showncode=Rooms[room_id]["questions"][qtn_order]["showncode"], qtn=qtn, ans=ans)
+        if (room.getStatus() < len(room.getQuestions())-1):
+            room.incStatus()
+            # 不同问题类型渲染不同页面
+            if (cq.getType() == "SMC"):
+                return render_template('Ingame/QuestionShow_SMC.html',
+                                       shcd=cq.getShowncode(),
+                                       txt=cq.getText(),
+                                       opt=cq.getOptions(),
+                                       ans=cq.getAnswer(),
+                                       rmn=cq.getRemain())
+            elif (cq.getType() == "MMC"):
+                return render_template('Ingame/QuestionShow_MMC.html',
+                                       shcd=cq.getShowncode(),
+                                       txt=cq.getText(),
+                                       opt=cq.getOptions(),
+                                       ans=cq.getAnswers(),
+                                       rmn=cq.getRemain())
+            elif (cq.getType() == "YN"):
+                return render_template('Ingame/QuestionShow_YN.html',
+                                       shcd=cq.getShowncode(),
+                                       txt=cq.getText(),
+                                       ans=cq.getAnswer(),
+                                       rmn=cq.getRemain())
     else:
         return render_template('Ingame/QuestionShow.html')
 
@@ -253,22 +298,29 @@ def qsn_start_game():
 def ans_start_game():
     room_id = request.args.get("room_id")
     if (room_id in Rooms):
-        # 展示第一个问题时，status==0
-        qtn_order = Rooms[room_id]["status"]
-        if (Rooms[room_id]["questions"][qtn_order]["type"] == "SMC"):
-            qtn = Rooms[room_id]["questions"][qtn_order]["question"]
-            opt = Rooms[room_id]["questions"][qtn_order]["options"]
-            ans = Rooms[room_id]["questions"][qtn_order]["answer"]
-            return render_template('Ingame/AnswerShow_SMC.html', showncode=Rooms[room_id]["questions"][qtn_order]["showncode"], qtn=qtn, opt=opt, ans=ans)
-        elif (Rooms[room_id]["questions"][qtn_order]["type"] == "MMC"):
-            qtn = Rooms[room_id]["questions"][qtn_order]["question"]
-            opt = Rooms[room_id]["questions"][qtn_order]["options"]
-            ans = Rooms[room_id]["questions"][qtn_order]["answer"]
-            return render_template('Ingame/AnswerShow_MMC.html', showncode=Rooms[room_id]["questions"][qtn_order]["showncode"], qtn=qtn, opt=opt, ans=ans)
-        elif (Rooms[room_id]["questions"][qtn_order]["type"] == "YN"):
-            qtn = Rooms[room_id]["questions"][qtn_order]["question"]
-            ans = Rooms[room_id]["questions"][qtn_order]["answer"]
-            return render_template('Ingame/AnswerShow_YN.html', showncode=Rooms[room_id]["questions"][qtn_order]["showncode"], qtn=qtn, ans=ans)
+        room = Rooms[room_id]
+        cq = room.getCurrentQuestion()
+        # 展示第一个问题时，status==0，不同问题类型渲染不同页面
+        if (cq.getType() == "SMC"):
+            return render_template('Ingame/AnswerShow_SMC.html',
+                                   shcd=cq.getShowncode(),
+                                   txt=cq.getText(),
+                                   opt=cq.getOptions(),
+                                   ans=cq.getAnswer(),
+                                   rmn=cq.getRemain())
+        elif (cq.getType() == "MMC"):
+            return render_template('Ingame/AnswerShow_MMC.html',
+                                   shcd=cq.getShowncode(),
+                                   txt=cq.getText(),
+                                   opt=cq.getOptions(),
+                                   ans=cq.getAnswers(),
+                                   rmn=cq.getRemain())
+        elif (cq.getType() == "YN"):
+            return render_template('Ingame/AnswerShow_YN.html',
+                                   shcd=cq.getShowncode(),
+                                   txt=cq.getText(),
+                                   ans=cq.getAnswer(),
+                                   rmn=cq.getRemain())
     else:
         return render_template('Ingame/AnswerShow.html')
 
@@ -277,8 +329,8 @@ def ans_start_game():
 def to_rank():
     room_id = request.args.get("room_id")
     # 如果还没完成最后一题，则房主方跳转到SimpleRank.html；如果已经完成最后一题，则房主方跳转到FinalRank.html
-    if (Rooms[room_id]["status"] < len(Rooms[room_id]["questions"])-1):
-        return render_template('SimpleRank.html', room_id=room_id, qtn_order=Rooms[room_id]["status"])
+    if (Rooms[room_id].getStatus() < len(Rooms[room_id].getQuestions())-1):
+        return render_template('SimpleRank.html', room_id=room_id, qtn_order=Rooms[room_id].getStatus())
     else:
         return render_template('FinalRank.html', room_id=room_id)
 
@@ -301,17 +353,18 @@ def preanswer():
 @socketio.on("checkRoomStatus")
 def checkRoomStatus(room_id):
     if room_id in Rooms:
-        room_status = Rooms[room_id]['status']
-        return room_status
+        return Rooms[room_id].getStatus()
     else:
         # 返回-2表示房间不存在
         return -2
+
+# 这里有问题待修复
 
 
 @socketio.on("checkPlayersData")
 def checkPlayers(room_id):
     if room_id in Rooms:
-        players = Rooms[room_id]['players']
+        players = Rooms[room_id].getPlayers()
         return players
     else:
         # 返回-2表示房间不存在
@@ -321,8 +374,8 @@ def checkPlayers(room_id):
 @socketio.on("checkRankPlayers")
 def checkRankPlayers(room_id):
     # 将改房间的玩家list按分数大到小排序
-    Rooms[room_id]["players"].sort(
-        key=lambda player: player["score"], reverse=True)
+    room=Rooms[room_id]
+    room.sortPlayers()
     top3_players_data = {
         "p1_name": "", "p1_score": 0,
         "p2_name": "", "p2_score": 0,
@@ -330,8 +383,8 @@ def checkRankPlayers(room_id):
     }
     for i in range(1, 4):
         try:
-            top3_players_data[f"p{i}_name"] = Rooms[room_id]["players"][i-1]["name"]
-            top3_players_data[f"p{i}_score"] = Rooms[room_id]["players"][i-1]["score"]
+            top3_players_data[f"p{i}_name"] = (room.getPlayers()[i-1]).getName()
+            top3_players_data[f"p{i}_score"] = (room.getPlayers()[i-1]).getScore()
         except:
             break
     print(top3_players_data)
@@ -342,18 +395,19 @@ def checkRankPlayers(room_id):
 def checkRoomExists(data):
     room_id = data["room_id"]
     if room_id in Rooms:
+        room=Rooms[room_id]
         user_name = data["name"]
         print(user_name)
         # 禁止user_name爲空或已被占用的玩家加入游戲
-        for p in Rooms[room_id]["players"]:
-            if (user_name in p["name"]):
+        for p in room.getPlayers():
+            if (user_name == p.getName()):
                 return {'room_exists': True, 'isReady': False}
         if (user_name == ""):
             return {'room_exists': True, 'isReady': False}
         # 进入回答第一个问题，加入玩家
         user_ip = request.remote_addr
-        Rooms[room_id]["players"].append(
-            {"ip": user_ip, "name": user_name, "score": 0})
+        player=Player(user_name,user_ip)
+        room.addPlayer(player)
         return {'room_exists': True, 'isReady': True}
     else:
         return {'room_exists': False}
@@ -362,26 +416,43 @@ def checkRoomExists(data):
 @socketio.on("removePlayer")
 def removePlayer(data):
     room_id = data["room_id"]
-    ip = data["ip"]
-    print(ip)
-    for p in Rooms[room_id]["players"]:
-        if (p["ip"] == ip):
-            Rooms[room_id]["players"].remove(p)
+    name=data["name"]
+    print(name)
+    Rooms[room_id].removePlayerByName(name)
+
+
+@app.route('/ScoreShow')
+def score_show():
+    room_id = request.args.get("room_id")
+    user_ip = request.remote_addr
+    room=Rooms[room_id]
+    i = 0
+    for player in room.getPlayers():
+        if (player.getIp == user_ip):
+            name = player["name"]
+            score = player["score"]
+            rank = i
             break
+        i += 1
+    # 如果还没完成最后一题，则玩家方跳转到SimpleScoreShow.html；如果已经完成最后一题，则玩家方跳转到FinalScoreShow.html
+    if (room.getStatus() < len(room.getQuestions())-1):
+        return render_template('SimpleScoreShow.html', qtn_order=room.getStatus(), name=name, score=score)
+    else:
+        return render_template('FinalScoreShow.html', qtn_order=room.getStatus(), name=name, score=score, rank=rank+1)
 
 
 @socketio.on("newQuestion")
 def newQuestion(room_id):
     start_time = time.time()
     print(start_time)
-    Rooms[room_id]["timer"] = start_time
+    Rooms[room_id].setTimer(start_time)
 
 
 @socketio.on("getSecondsLeft")
 def getSecondsLeft(data):
     room_id = data["room_id"]
     current_time = time.time()
-    left_seconds = int(Rooms[room_id]["timer"]+15-current_time)
+    left_seconds = int(Rooms[room_id].getTimer()+15-current_time)
     if (left_seconds > 0):
         return left_seconds
     else:
@@ -395,71 +466,59 @@ def toNextQuestion(room_id):
 
 @socketio.on('process_newroom')
 def process_newroom(data):
-    # 取得房间id
     # print("start process_newroom")
     room_id = data["room_id"]
-    Rooms[room_id] = {"status": -1, "players": [], "questions": []}
+    user_ip = request.remote_addr
+    Rooms[room_id] = Room(room_id,user_ip)
     # 取得问题集json
     # print("start process_json")
     qtn_file = data['file']
     try:
-        data = json.loads(qtn_file)
-        # print(data)
-        # 在这里对 JSON 数据进行处理
-        Rooms[room_id]["questions"] = data
-        # print(request.sid)
+        Rooms[room_id].setQuestionsFromJson(qtn_file)
         join_room(room_id)
         return {'sucess': True}
     except Exception as e:
         # 客户端状态回传（待优化）
         return {'sucess': False, 'error_msg': str(e)}
 
-
-@socketio.on("refreshRoomDataShow")
-def refreshRoomDataShow(data):
-    return Rooms
-
-
 @socketio.on("checkAnswerIfCorrect")
 def checkAnswerIfCorrect(data):
     answer = data["chosen_answer"]
     room_id = data["room_id"]
+    room=Rooms[room_id]
     print(answer)
     print(room_id)
-    qtn_order = Rooms[room_id]["status"]
-    real_ans = Rooms[room_id]["questions"][qtn_order]["answer"]
+    real_ans = room.getCurrentQuestion().getAnswer()
     if (real_ans == answer):
         user_ip = request.remote_addr
-        for player in Rooms[room_id]["players"]:
-            if (player["ip"] == user_ip):
-                player["score"] += 10
+        for player in room.getPlayers():
+            if (player.getIp() == user_ip):
+                player.addScore(10)
                 break
     return (real_ans)
 
 
 @socketio.on("checkMultiAnswersIfCorrect")
-def checkAnswerIfCorrect(data):
+def checkMultiAnswerIfCorrect(data):
     answers = data["chosen_answers"]
     room_id = data["room_id"]
+    room=Rooms[room_id]
     print(answers)
     print(room_id)
-    qtn_order = Rooms[room_id]["status"]
-    real_ans = Rooms[room_id]["questions"][qtn_order]["answer"]
+    real_ans = room.getCurrentQuestion().getAnswers()
     if (real_ans == answers):
         user_ip = request.remote_addr
-        for player in Rooms[room_id]["players"]:
-            if (player["ip"] == user_ip):
-                player["score"] += 10
+        for player in room.getPlayers():
+            if (player.getIp() == user_ip):
+                player.addScore(10)
                 break
     return (real_ans)
 
 
 @socketio.on("checkAnswersData")
-def checkAnswerIfCorrect(room_id):
-    qtn_order = Rooms[room_id]["status"]
-    answer_list = Rooms[room_id]["questions"][qtn_order]["answer"]
-    option_list = Rooms[room_id]["questions"][qtn_order]["options"]
-    data = {"answer_list": answer_list, "option_list": option_list}
+def checkAnswersData(room_id):
+    question=Rooms[room_id].getCurrentQuestion()
+    data = {"answer_list": question.getAnswers(), "option_list": question.getOptions()}
     print(data)
     return (data)
 

@@ -49,6 +49,7 @@
             var playerTable = document.getElementById('player-table');
             playerTable.innerHTML = '';
             socket.emit("checkPlayersData", room_id, function (pl) {
+                console.log("CheckingPlayersData");
                 console.log(pl);
                 players = pl;
             });

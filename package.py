@@ -12,6 +12,16 @@ class Player:
         self.__ip = ip
         self.__score = score
 
+    def __repr__(self) -> str:
+        return str({"name": self.__name,
+                    "ip": self.__ip,
+                    "score": self.__score})
+
+    def __dict__(self) -> dict[str, str | int]:
+        return {"name": self.__name,
+                "ip": self.__ip,
+                "score": self.__score}
+
     def getName(self) -> str:
         return (self.__name)
 
@@ -62,6 +72,15 @@ class SMC(Question):
         self.__options = options
         self.__answer = answer
 
+    def __repr__(self) -> str:
+        return str({"type": self.getType(),
+                    "showncode": self.getShowncode(),
+                    "text": self.getText(),
+                    "remain": self.getRemain(),
+                    "options": self.getOptions(),
+                    "answer": self.getAnswer()
+                    })
+
     def getOptions(self) -> list:
         return (self.__options)
 
@@ -75,6 +94,15 @@ class MMC(Question):
         self.__options = options
         self.__answers = answers
 
+    def __repr__(self) -> str:
+        return str({"type": self.getType(),
+                    "showncode": self.getShowncode(),
+                    "text": self.getText(),
+                    "remain": self.getRemain(),
+                    "options": self.getOptions(),
+                    "answers": self.getAnswers()
+                    })
+
     def getOptions(self) -> list:
         return (self.__options)
 
@@ -87,6 +115,14 @@ class YN(Question):
         super().__init__(type, showncode, text, remain)
         self.__answer = answer
 
+    def __repr__(self) -> str:
+        return str({"type": self.getType(),
+                    "showncode": self.getShowncode(),
+                    "text": self.getText(),
+                    "remain": self.getRemain(),
+                    "answer": self.getAnswer()
+                    })
+
     def getAnswer(self) -> str:
         return (self.__answer)
 
@@ -94,10 +130,18 @@ class YN(Question):
 class STAT(Question):
     def __init__(self, type: str, showncode: str, text: str, remain: int, state: str):
         super().__init__(type, showncode, text, remain)
-        self.state = state
+        self.__state = state
 
-    def getAnswer(self) -> str:
-        return (self.state)
+    def __repr__(self) -> str:
+        return str({"type": self.getType(),
+                    "showncode": self.getShowncode(),
+                    "text": self.getText(),
+                    "remain": self.getRemain(),
+                    "state": self.getState()
+                    })
+
+    def getState(self) -> str:
+        return (self.__state)
 
 
 class Room:
@@ -112,6 +156,22 @@ class Room:
         self.__master_ip = master_ip
         self.__status = -1
         self.__timer = 0
+
+    def __repr__(self) -> str:
+        return str({"room_id": self.__room_id,
+                    "player_list": self.__player_list,
+                    "question_list": self.__question_list,
+                    "master_ip": self.__master_ip,
+                    "status": self.__status,
+                    "timer": self.__timer, })
+
+    def __dict__(self)->dict:
+        return {"room_id": self.__room_id,
+                    "player_list": self.__player_list,
+                    "question_list": self.__question_list,
+                    "master_ip": self.__master_ip,
+                    "status": self.__status,
+                    "timer": self.__timer, }
 
     def getId(self) -> str:
         return (self.__room_id)
@@ -161,6 +221,7 @@ class Room:
         try:
             data = json.loads(json_file)
             for question in data:
+                print(question)
                 if (question["type"] == "SMC"):
                     self.__addQuesion(SMC(question["type"], question["showncode"], question["text"],
                                       question["remain"], question["options"], question["answer"]))
@@ -168,17 +229,18 @@ class Room:
                     self.__addQuesion(MMC(question["type"], question["showncode"], question["text"],
                                       question["remain"], question["options"], question["answers"]))
                 elif (question["type"] == "YN"):
-                    self.__addQuesion(
-                        YN(question["type"], question["showncode"], question["text"], question["remain"], question["answer"]))
+                    self.__addQuesion(YN(question["type"], question["showncode"], question["text"],
+                                          question["remain"], question["answer"]))
                 elif (question["type"] == "STAT"):
-                    self.__addQuesion(STAT(
-                        question["type"], question["showncode"], question["text"], question["remain"], question["state"]))
-        except:
-            pass
+                    self.__addQuesion(STAT(question["type"], question["showncode"], question["text"],
+                                        question["remain"], question["state"]))
+        except Exception as e:
+            print(e)
 
     def getCurrentQuestion(self) -> Question | SMC | MMC | YN | STAT:
-        if (self.__status > -1 and self.__status < len(self.__question_list)):
-            return (self.__question_list[self.__status])
+        if (self.getStatus() > -1 and self.getStatus() < len(self.getQuestions())):
+            # print("in getCurrentQuuestion.")
+            return (self.__question_list[self.getStatus()])
 
     def getMasterIp(self) -> str:
         return (self.__master_ip)

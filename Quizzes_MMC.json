@@ -14,7 +14,8 @@
       "A",
       "G",
       "D"
-    ]
+    ],
+    "remain":20
   },
   {
     "showncode":"uno",
@@ -31,7 +32,8 @@
       "A",
       "G",
       "D"
-    ]
+    ],
+    "remain":20
   },
   {
     "showncode":"uno",
@@ -48,7 +50,8 @@
       "A",
       "G",
       "D"
-    ]
+    ],
+    "remain":20
   },
   {
     "showncode":"uno",
@@ -65,7 +68,8 @@
       "A",
       "G",
       "D"
-    ]
+    ],
+    "remain":20
   },
   {
     "showncode":"uno",
@@ -82,7 +86,8 @@
       "A",
       "G",
       "D"
-    ]
+    ],
+    "remain":20
   },
   {
     "showncode":"uno",
@@ -99,6 +104,7 @@
       "A",
       "G",
       "D"
-    ]
+    ],
+    "remain":20
   }
 ]

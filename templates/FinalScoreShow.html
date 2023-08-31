@@ -15,10 +15,13 @@
 
 <body>
     <h1>Q{{ qtn_order }} Result</h1>
-    <p id="player_name">{{ name }}</p>
+    <p id="player_name"></p>
     <p id="player_score">{{ score }}</p>
     <h2>You have finished the final question! You are No.{{rank}}!</h2>
     <h3>Congratulaion for the rankers on the big screen!</h3>
+    <script>
+        $("#player_name").text(sessionStorage.getItem("user_name"));
+    </script>
 </body>
 
 </html>

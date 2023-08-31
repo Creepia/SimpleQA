@@ -1,0 +1,36 @@
+[
+  {
+    "showncode":"",
+    "type": "STAT",
+    "text": "Paris is the capital of France",
+    "remain":5,
+    "state":"Testing"
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of France?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Madrid"
+    ],
+    "answer": "A",
+    "remain":15,
+    "state":"Testing"
+  },
+  {"showncode":"",
+  "type": "STAT",
+  "text": "Paris is the capital of France",
+  "remain":5,
+  "state":"Testing"
+  },
+  {
+    "showncode":"dual",
+    "type": "STAT",
+    "text": "Paris is the capital of France",
+    "remain":10,
+    "state":"Testing"
+  }
+]

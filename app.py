@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request
 from flask_socketio import SocketIO, join_room
-from random import randint
 from package import *
 import time
 
@@ -74,14 +73,17 @@ def room_create():
 @app.route('/QuestionShow')
 def qsn_start_game():
     room_id = request.args.get("room_id")
+    # print(room_id)
     if (room_id in Rooms):
         room = Rooms[room_id]
-        cq = room.getCurrentQuestion()
-        # 展示第一个问题时，status==0
+        # 展示第一个问题前，status==-1
         if (room.getStatus() < len(room.getQuestions())-1):
             room.incStatus()
+            # 展示第一个问题时，status==0
+            cq = room.getCurrentQuestion()
             # 不同问题类型渲染不同页面
             if (cq.getType() == "SMC"):
+                # print("Now we go to SMC Page.")
                 return render_template('Ingame/QuestionShow_SMC.html',
                                        shcd=cq.getShowncode(),
                                        txt=cq.getText(),
@@ -101,6 +103,12 @@ def qsn_start_game():
                                        txt=cq.getText(),
                                        ans=cq.getAnswer(),
                                        rmn=cq.getRemain())
+            elif (cq.getType() == "STAT"):
+                return render_template('Ingame/QuestionShow_STAT.html',
+                                       shcd=cq.getShowncode(),
+                                       txt=cq.getText(),
+                                       rmn=cq.getRemain(),
+                                       stat=cq.getState())
     else:
         return render_template('Ingame/QuestionShow.html')
 
@@ -111,6 +119,7 @@ def ans_start_game():
     if (room_id in Rooms):
         room = Rooms[room_id]
         cq = room.getCurrentQuestion()
+        # print(cq.getType())
         # 展示第一个问题时，status==0，不同问题类型渲染不同页面
         if (cq.getType() == "SMC"):
             return render_template('Ingame/AnswerShow_SMC.html',
@@ -132,6 +141,12 @@ def ans_start_game():
                                    txt=cq.getText(),
                                    ans=cq.getAnswer(),
                                    rmn=cq.getRemain())
+        elif (cq.getType() == "STAT"):
+            return render_template('Ingame/AnswerShow_STAT.html',
+                                   shcd=cq.getShowncode(),
+                                   txt=cq.getText(),
+                                   rmn=cq.getRemain(),
+                                   stat=cq.getState())
     else:
         return render_template('Ingame/AnswerShow.html')
 
@@ -174,8 +189,10 @@ def checkRoomStatus(room_id):
 
 @socketio.on("checkPlayersData")
 def checkPlayers(room_id):
+    # print("Checking Players Data")
     if room_id in Rooms:
-        players = Rooms[room_id].getPlayers()
+        players = [p.__dict__() for p in Rooms[room_id].getPlayers()]
+        # print(players)
         return players
     else:
         # 返回-2表示房间不存在
@@ -210,7 +227,7 @@ def checkRoomExists(data):
     if room_id in Rooms:
         room = Rooms[room_id]
         user_name = data["name"]
-        print(user_name)
+        # print(user_name)
         # 禁止user_name爲空或已被占用的玩家加入游戲
         for p in room.getPlayers():
             if (user_name == p.getName()):
@@ -241,23 +258,23 @@ def score_show():
     room = Rooms[room_id]
     i = 0
     for player in room.getPlayers():
-        if (player.getIp == user_ip):
-            name = player["name"]
-            score = player["score"]
+        if (player.getIp() == user_ip):
+            name = player.getName()
+            score = player.getScore()
             rank = i
             break
         i += 1
     # 如果还没完成最后一题，则玩家方跳转到SimpleScoreShow.html；如果已经完成最后一题，则玩家方跳转到FinalScoreShow.html
     if (room.getStatus() < len(room.getQuestions())-1):
-        return render_template('SimpleScoreShow.html', qtn_order=room.getStatus(), name=name, score=score)
+        return render_template('SimpleScoreShow.html', qtn_order=room.getStatus(), score=score)
     else:
-        return render_template('FinalScoreShow.html', qtn_order=room.getStatus(), name=name, score=score, rank=rank+1)
+        return render_template('FinalScoreShow.html', qtn_order=room.getStatus(), score=score, rank=rank+1)
 
 
 @socketio.on("newQuestion")
 def newQuestion(room_id):
     start_time = time.time()
-    print(start_time)
+    # print(start_time)
     Rooms[room_id].setTimer(start_time)
 
 
@@ -265,7 +282,8 @@ def newQuestion(room_id):
 def getSecondsLeft(data):
     room_id = data["room_id"]
     current_time = time.time()
-    left_seconds = int(Rooms[room_id].getTimer()+15-current_time)
+    qtn_remain = Rooms[room_id].getCurrentQuestion().getRemain()
+    left_seconds = int(Rooms[room_id].getTimer() + qtn_remain - current_time)
     if (left_seconds > 0):
         return left_seconds
     else:
@@ -287,6 +305,7 @@ def process_newroom(data):
     # print("start process_json")
     qtn_file = data['file']
     try:
+        # print(qtn_file)
         Rooms[room_id].setQuestionsFromJson(qtn_file)
         join_room(room_id)
         return {'sucess': True}
@@ -336,6 +355,19 @@ def checkAnswersData(room_id):
     ), "option_list": question.getOptions()}
     print(data)
     return (data)
+
+
+@socketio.on("refreshRoomDataShow")
+def refreshRoomDataShow(p):
+    data = [room.__dict__() for room in Rooms.values()]
+    # print(str(data))
+    return str(data)
+
+
+@socketio.on("DeleteRoomData")
+def DeleteRoomData(room_id):
+    if (room_id in Rooms):
+        del Rooms[room_id]
 
 
 if __name__ == '__main__':

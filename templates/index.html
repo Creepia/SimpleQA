@@ -3,13 +3,15 @@
 <head>
     <title>SimpleQA</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Greenstyle/greenstyle.css') }}">
     <link rel="icon" type="image/png" href="/static/favicon.png">
 
 </head>
 <body>
-    <h1>SimpleQA</h1>
+    <h1 class="index-title">SimpleQA</h1>
     <a class="button" href="RoomCreate">Q</a>
     <a class="button" href="RoomJoin">A</a>
     <p class="ip">ip:{{user_ip}}</p>
+    <div class="index-bg"></div>
 </body>
 </html>

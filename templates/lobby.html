@@ -21,6 +21,7 @@
         function RefreshRoomDataShow() {
             socket.emit("refreshRoomDataShow", 1, function (res) {
                 $("#room_data_show").text(JSON.stringify(res, null, 2));
+                //$("#room_data_show").text(res);
             });
         }
         // 每隔一段时间调用函数，单位为ms

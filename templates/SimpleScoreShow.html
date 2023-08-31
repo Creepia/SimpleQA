@@ -14,15 +14,16 @@
 </head>
 
 <body>
-    <h1>Q{{ qtn_order }} Result</h1>
-    <p id="player_name">{{ name }}</p>
+    <h1>{{ qtn_order }} Result</h1>
+    <p id="player_name"></p>
     <p id="player_score">{{ score }}</p>
     <h2>Waiting for next question...</h2>
     <script>
+        $("#player_name").text(sessionStorage.getItem("user_name"));
         socket.on("toNextQuestion_res",()=>{
             //alert("recieved toNextQuestion");
             window.location.href = '/AnswerShow?room_id=' + room_id;
-        })
+        });
         //var interval = setInterval(checkRoomStatus, 500);
     </script>
 </body>

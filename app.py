@@ -289,9 +289,9 @@ def getSecondsLeft(data):
         return 0
 
 
-@socketio.on("toNextQuestion_toclient")
+@socketio.on("toNextQuestion")
 def toNextQuestion(room_id):
-    socketio.emit("toNextQuestion_toclient_res")
+    socketio.emit("toNextQuestion_res")
 
 
 @socketio.on('process_newroom')

@@ -46,12 +46,12 @@ class Question:
             type:类型，值为"SMC"（单项选择）,"YN"（判断）等等.\n
             showncode:题号，一般为"Q1","First Question","1."等等.\n
             text:显示文本，如"Which is the biggest mammal?".\n
-        另外有remain参数为该页面的停留时间，时间到达将跳过这个页面，默认为15，单位为s.
+        另外有remain参数为该页面的停留时间，时间到达将跳过这个页面，单位为s,會自動加上0.5秒與延遲抵消.
         '''
         self.__type = type
         self.__showncode = showncode
         self.__text = text
-        self.__remain = remain
+        self.__remain = remain+0.5
 
     def getType(self) -> str:
         return (self.__type)

@@ -95,7 +95,51 @@
     background: #0099ff;
     padding: 12% 8% 12% 8%;
     text-decoration: none;
+    animation: simple_fade_in_inplace;
+    animation-duration: 2s;
+}.option-button-YN:hover {
+    background-color: #d8fff3;
 }
+
+.option-button-SMC{
+    display: block;
+    margin: 0% 1%;
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 4ch;
+    background: #0099ff;
+    padding: 2% 23% 2% 23%;
+    text-decoration: none;
+    animation: simple_fade_in_inplace;
+    animation-duration: 2s;
+}.option-button-SMC:hover {
+    background-color: #89ffdc;
+}
+
+.option-show-SMC {
+    float: left;
+    padding: 2% auto;
+    align-items: center;
+    margin: auto;
+    justify-content: center;
+}
+
+.option-show-letter-SMC{
+    display:inline;
+    font-size: 3ch;
+    padding: 1% 1%;
+    background-color: #22c795;
+    text-decoration: none;
+    margin: 1.5% 40%;
+    border-radius: 15px;
+    box-shadow: 0px 3px 3px #3a4f41;
+    animation: simple_fade_in;
+    animation-duration: 2s;
+}
+
+
 
 @keyframes simple_fade_in {
     0% {

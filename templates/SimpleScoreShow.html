@@ -22,9 +22,10 @@
     <script>
         $("#player_name").text(sessionStorage.getItem("user_name"));
         socket.on("toNextQuestion_res", () => {
+            // 爲了問題方先運行好頁面使得status+1，答題方要延遲400ms
             setTimeout(function () {
                 window.location.href = '/AnswerShow?room_id=' + room_id;
-            }, 250);
+            }, 400);
 
         });
         //var interval = setInterval(checkRoomStatus, 500);

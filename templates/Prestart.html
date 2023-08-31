@@ -4,6 +4,7 @@
 <head>
     <title>Prestart</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -25,7 +26,7 @@
 <body>
     <div class="container">
         <h1>ID <span id="room-id"> </span></h1>
-        <button class="button start-button" onclick="toQuestionShow()">Start</button>
+        <button class="hrline-button" onclick="toQuestionShow()">Start</button>
         <p class="filename">{{ file_name }}</p>
         <div class="player-list">
             <table class="player-list-table">

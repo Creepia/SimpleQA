@@ -1,0 +1,135 @@
+.index-bg {
+    position: fixed;
+    z-index: -100;
+    top:0%;
+    right:0%;
+    width: 100%;
+    height: 100%;
+    float:left;
+    background-image: url('index_bg.jpeg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    animation: bright_fade_in;
+    animation-duration: 2s;
+}
+
+.index-title{
+    font-size: 400%;
+    position: relative;
+    animation: simple_fade_in;
+    animation-duration: 2s;
+}
+
+.setting-button {
+    display:block;
+    font-size: 3ch;
+    padding: 1% 1%;
+    background-color: #22c795;
+    text-decoration: none;
+    margin: 1.5% 40%;
+    border-radius: 15px;
+    box-shadow: 0px 3px 3px #3a4f41;
+    animation: simple_fade_in;
+    animation-duration: 2s;
+}
+.setting-button:hover {
+    background-color: #26ecb1;
+}
+
+.hrline-button{
+    display:inline;
+    font-size: 3ch;
+    padding: 1% 1%;
+    background-color: #22c795;
+    text-decoration: none;
+    margin: 1% 2%;
+    border-radius: 15px;
+    box-shadow: 0px 3px 3px #3a4f41;
+    animation: simple_fade_in;
+    animation-duration: 2s;
+}
+.hrline-button:hover {
+    background-color: #26ecb1;
+}
+
+.text-title{
+    font-size: 300%;
+    position: relative;
+    width: 100%;
+    margin: 0% auto;
+    animation: simple_fade_in;
+    animation-duration: 2s;
+}
+
+.small-text {
+    font-size: 16px;
+    font-weight:bold;
+    color: #9836c3;
+    animation: simple_fade_in_inplace;
+    animation-duration: 2s;
+}
+
+.rank-table{
+    animation: simple_fade_in;
+    animation-duration: 2s;
+}
+
+.setting-input{
+    background: #8cbfaa;
+    font-size: 3ch;
+    width: 15ch;
+    margin: 1% 0%;
+    border-radius: 15px;
+    animation: simple_fade_in;
+    animation-duration: 2s;
+}
+
+.option-button-YN{
+    margin: 2% 1%;
+    -webkit-border-radius: 8;
+    -moz-border-radius: 8;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 15ch;
+    background: #0099ff;
+    padding: 12% 8% 12% 8%;
+    text-decoration: none;
+}
+
+@keyframes simple_fade_in {
+    0% {
+        opacity: 0;
+        top: 20px;
+    }
+
+    100% {
+        opacity: 1;
+        top: 0px;
+    }
+}
+
+@keyframes simple_fade_in_inplace {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes bright_fade_in {
+    0% {
+        filter:brightness(0.5);
+    }
+    30%{
+        filter:brightness(0.8);
+    }
+    70%{
+        filter:brightness(1.5);
+    }
+    100% {
+        filter:brightness(1);
+    }
+}

@@ -4,6 +4,7 @@
 <head>
     <title>Room Create</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -58,11 +59,11 @@
     <div class="container">
         <h1>Room Create</h1>
         <div class="upload-container">
-            <input class="input" type="file" id="file-input">
-            <button class="button upload-button" onclick="checkFile()">Check</button>
+            <input type="file" id="file-input">
+            <button class="hrline-button" onclick="checkFile()">Check</button>
         </div>
         <p id="error-message" class="error-message"></p>
-        <button id="next-button" class="button next-button" onclick="toPrestart()" disabled>NEXT</button>
+        <button id="next-button" class="hrline-button" onclick="toPrestart()" disabled>NEXT</button>
     </div>
 </body>
 

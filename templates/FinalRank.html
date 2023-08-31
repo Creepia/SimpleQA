@@ -4,6 +4,7 @@
 <head>
     <title>Final Rank</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
@@ -23,11 +24,11 @@
 
 <body>
     <div>
-        <a href="/" class="index-btn button">Index</a>
+        <a href="/" class="index-btn setting-button">Index</a>
     </div>
 
     <div>
-        <button class="screenshot-btn button" onclick="takeScreenshot()">Screenshot</button>
+        <button class="screenshot-btn setting-button" onclick="takeScreenshot()">Screenshot</button>
     </div>
 
     <div class="award-ceremony">

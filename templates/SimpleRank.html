@@ -4,6 +4,7 @@
 <head>
     <title>Simple Rank</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
@@ -11,19 +12,24 @@
         var urlParams = new URLSearchParams(window.location.search);
         var room_id = urlParams.get('room_id');
         function toNextQuestion() {
-            socket.emit("toNextQuestion",room_id);
+            socket.emit("toNextQuestion", room_id);
             window.location.href = 'QuestionShow?room_id=' + room_id;
         }
     </script>
 </head>
 
 <body>
-    <h1>{{ qtn_order }} Result</h1>
-    <p>No.1&emsp;&emsp;<span id="simplerank_player1_name"></span>&emsp;&emsp;<span id="simplerank_player1_score"></span></p>
-    <p>No.2&emsp;&emsp;<span id="simplerank_player2_name"></span>&emsp;&emsp;<span id="simplerank_player2_score"></span></p>
-    <p>No.3&emsp;&emsp;<span id="simplerank_player3_name"></span>&emsp;&emsp;<span id="simplerank_player3_score"></span></p>
+    <h1>Result</h1>
+    <div class="rank-table">
+        <p class="mid-text" style="color: gold;">No.1&emsp;&emsp;<span id="simplerank_player1_name"></span>&emsp;&emsp;<span
+                id="simplerank_player1_score"></span></p>
+        <p class="mid-text" style="color: silver;">No.2&emsp;&emsp;<span id="simplerank_player2_name"></span>&emsp;&emsp;<span
+                id="simplerank_player2_score"></span></p>
+        <p class="mid-text" style="color: chocolate;">No.3&emsp;&emsp;<span id="simplerank_player3_name"></span>&emsp;&emsp;<span
+                id="simplerank_player3_score"></span></p>
+    </div>
     <!-- Add more players as needed -->
-    <button id="next-button" class="button" onclick="toNextQuestion()">NEXT</button>
+    <button id="next-button" class="hrline-button" onclick="toNextQuestion()">NEXT</button>
     <script>
         function RefreshRank() {
             socket.emit("checkRankPlayers", room_id, function (res) {

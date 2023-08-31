@@ -4,6 +4,7 @@
 <head>
     <title>Join Room</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
@@ -34,14 +35,14 @@
     <div class="container">
         <h1>Join Room</h1>
         <div class="form-group">
-            <label for="room-id">Room ID:</label>
-            <input type="text" id="room-id" name="room_id" required>
+            <label for="room-id" class="mid-text">Room ID</label>
+            <input type="text" class="setting-input" id="room-id" name="room_id" required>
         </div>
         <div id="name-group" class="form-group" style="display: none;">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" autocomplete="off">
+            <label for="name" class="mid-text">Name</label>
+            <input type="text" class="setting-input" id="name" name="name" autocomplete="off">
         </div>
-        <button class="button" onclick="checkRoom()">Join</button>
+        <button class="hrline-button" onclick="checkRoom()">&nbsp;&nbsp;&nbsp;&nbsp;Join&nbsp;&nbsp;&nbsp;&nbsp;</button>
     </div>
 
     <script>

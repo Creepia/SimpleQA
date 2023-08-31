@@ -259,16 +259,15 @@ def score_show():
     i = 0
     for player in room.getPlayers():
         if (player.getIp() == user_ip):
-            name = player.getName()
             score = player.getScore()
             rank = i
             break
         i += 1
     # 如果还没完成最后一题，则玩家方跳转到SimpleScoreShow.html；如果已经完成最后一题，则玩家方跳转到FinalScoreShow.html
     if (room.getStatus() < len(room.getQuestions())-1):
-        return render_template('SimpleScoreShow.html', qtn_order=room.getStatus(), score=score)
+        return render_template('SimpleScoreShow.html', score=score)
     else:
-        return render_template('FinalScoreShow.html', qtn_order=room.getStatus(), score=score, rank=rank+1)
+        return render_template('FinalScoreShow.html', score=score, rank=rank+1)
 
 
 @socketio.on("newQuestion")
@@ -290,9 +289,9 @@ def getSecondsLeft(data):
         return 0
 
 
-@socketio.on("toNextQuestion")
+@socketio.on("toNextQuestion_toclient")
 def toNextQuestion(room_id):
-    socketio.emit("toNextQuestion_res")
+    socketio.emit("toNextQuestion_toclient_res")
 
 
 @socketio.on('process_newroom')

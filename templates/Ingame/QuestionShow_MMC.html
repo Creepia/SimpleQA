@@ -4,6 +4,7 @@
 <head>
     <title>Question Show</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
@@ -11,7 +12,7 @@
 
 <body>
     <div class="container">
-        <h1>{{shcd}} {{txt}}</h1>
+        <h1 class="text-title">{{shcd}} {{txt}}</h1>
         <p class="small-text">Multi Select</p>
         <h3>Timer: <span id="timer">{{rmn}}</span> seconds</h3>
         <div id="answer-list">
@@ -31,6 +32,8 @@
                 if (left_seconds <= 0) {
                     clearInterval(interval);
                     window.location.href = 'Rank?room_id=' + room_id;
+                }else if(left_seconds <= 3){
+                    $("#timer").css({"color":"red"});
                 }
             });
         }

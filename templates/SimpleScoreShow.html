@@ -4,6 +4,7 @@
 <head>
     <title>Simple Score Show</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
@@ -14,15 +15,17 @@
 </head>
 
 <body>
-    <h1>{{ qtn_order }} Result</h1>
-    <p id="player_name"></p>
-    <p id="player_score">{{ score }}</p>
-    <h2>Waiting for next question...</h2>
+    <h1 class="text-title">Result</h1>
+    <p id="player_name" class="mid-text"></p>
+    <p id="player_score" class="small-text">{{ score }}</p>
+    <h2 class="mid-text">Waiting for next question...</h2>
     <script>
         $("#player_name").text(sessionStorage.getItem("user_name"));
-        socket.on("toNextQuestion_res",()=>{
-            //alert("recieved toNextQuestion");
-            window.location.href = '/AnswerShow?room_id=' + room_id;
+        socket.on("toNextQuestion_res", () => {
+            setTimeout(function () {
+                window.location.href = '/AnswerShow?room_id=' + room_id;
+            }, 250);
+
         });
         //var interval = setInterval(checkRoomStatus, 500);
     </script>

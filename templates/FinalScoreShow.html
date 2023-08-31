@@ -4,6 +4,7 @@
 <head>
     <title>Final Score Show</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script>
@@ -14,11 +15,11 @@
 </head>
 
 <body>
-    <h1>Q{{ qtn_order }} Result</h1>
-    <p id="player_name"></p>
-    <p id="player_score">{{ score }}</p>
-    <h2>You have finished the final question! You are No.{{rank}}!</h2>
-    <h3>Congratulaion for the rankers on the big screen!</h3>
+    <h1 class="text-title">Result</h1>
+    <p id="player_name" class="mid-text"></p>
+    <p id="player_score" class="small-text">{{ score }}</p>
+    <h2 class="mid-text">You have finished the final question! You are No.{{rank}}!</h2>
+    <h3 class="mid-text">Congratulaion for the rankers on the big screen!</h3>
     <script>
         $("#player_name").text(sessionStorage.getItem("user_name"));
     </script>

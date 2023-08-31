@@ -79,6 +79,11 @@
                 celebrationDiv.style.display = 'none';
             }, 3000); // Hide celebration after 3 seconds
         });
+
+        // 給後端發送銷毀該房間信息的指令
+        document.addEventListener('beforeunload', function () {
+            socket.emit("DeleteRoomData",room_id)
+        });
     </script>
 </body>
 

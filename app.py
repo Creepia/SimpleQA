@@ -78,7 +78,6 @@ def room_create():
 @app.route('/QuestionShow')
 def qsn_start_game():
     room_id = request.args.get("room_id")
-    # print(room_id)
     if (room_id in Rooms):
         room = Rooms[room_id]
         # 展示第一个问题前，status==-1
@@ -88,7 +87,6 @@ def qsn_start_game():
             cq = room.getCurrentQuestion()
             # 不同问题类型渲染不同页面
             if (cq.getType() == "SMC"):
-                # print("Now we go to SMC Page.")
                 return render_template('Ingame/QuestionShow_SMC.html',
                                        shcd=cq.getShowncode(),
                                        txt=cq.getText(),
@@ -124,7 +122,6 @@ def ans_start_game():
     if (room_id in Rooms):
         room = Rooms[room_id]
         cq = room.getCurrentQuestion()
-        # print(cq.getType())
         # 展示第一个问题时，status==0，不同问题类型渲染不同页面
         if (cq.getType() == "SMC"):
             return render_template('Ingame/AnswerShow_SMC.html',
@@ -199,10 +196,8 @@ def checkRoomStatus(data):
 
 @socketio.on("checkPlayersData")
 def checkPlayers(room_id):
-    # print("Checking Players Data")
     if room_id in Rooms:
         players = [p.__dict__() for p in Rooms[room_id].getPlayers()]
-        # print(players)
         return players
     else:
         # 返回-2表示房间不存在
@@ -227,7 +222,6 @@ def checkRankPlayers(room_id):
                 room.getPlayers()[i-1]).getScore()
         except:
             break
-    print(top3_players_data)
     return top3_players_data
 
 
@@ -237,7 +231,6 @@ def checkRoomExists(data):
     if room_id in Rooms:
         room = Rooms[room_id]
         user_name = data["name"]
-        # print(user_name)
         # 禁止user_name爲空或已被占用的玩家加入游戲
         for p in room.getPlayers():
             if (user_name == p.getName()):
@@ -257,7 +250,6 @@ def checkRoomExists(data):
 def removePlayer(data):
     room_id = data["room_id"]
     name = data["name"]
-    print(name)
     Rooms[room_id].removePlayerByName(name)
 
 
@@ -283,7 +275,6 @@ def score_show():
 @socketio.on("newQuestion")
 def newQuestion(room_id):
     start_time = time.time()
-    # print(start_time)
     Rooms[room_id].setTimer(start_time)
 
 
@@ -307,15 +298,12 @@ def toNextQuestion(room_id):
 
 @socketio.on('process_newroom')
 def process_newroom(data):
-    # print("start process_newroom")
     room_id = data["room_id"]
     user_ip = request.remote_addr
     Rooms[room_id] = Room(room_id, user_ip)
     # 取得问题集json
-    # print("start process_json")
     qtn_file = data['file']
     try:
-        # print(qtn_file)
         Rooms[room_id].setQuestionsFromJson(qtn_file)
         join_room(room_id)
         return {'sucess': True}
@@ -330,8 +318,6 @@ def checkAnswerIfCorrect(data):
     room_id = data["room_id"]
     user_name = data["user_name"]
     room = Rooms[room_id]
-    print(answer)
-    print(room_id)
     real_ans = room.getCurrentQuestion().getAnswer()
     if (real_ans == answer):
         for player in room.getPlayers():
@@ -351,8 +337,6 @@ def checkMultiAnswerIfCorrect(data):
     answers = data["chosen_answers"]
     room_id = data["room_id"]
     room = Rooms[room_id]
-    print(answers)
-    print(room_id)
     real_ans = room.getCurrentQuestion().getAnswers()
     if (real_ans == answers):
         user_ip = request.remote_addr
@@ -368,14 +352,12 @@ def checkAnswersData(room_id):
     question = Rooms[room_id].getCurrentQuestion()
     data = {"answer_list": question.getAnswers(
     ), "option_list": question.getOptions()}
-    print(data)
     return (data)
 
 
 @socketio.on("refreshRoomDataShow")
 def refreshRoomDataShow(p):
     data = [room.__dict__() for room in Rooms.values()]
-    # print(str(data))
     return str(data)
 
 
@@ -390,10 +372,23 @@ def ClearAllRoomData(p):
     global Rooms
     del Rooms
     Rooms = {"000000": Room("000000")}
-    return Rooms
+    return 200
 
+@socketio.on("countReadyPlayers")
+def countReadyPlayers(room_id):
+    return Rooms[room_id].getPlayersInReady()
+
+@socketio.on("setReadyForPlayer")
+def setReadyForPlayer(data):
+    try:
+        user_name=data["user_name"]
+        room_id=data["room_id"]
+        Rooms[room_id].getPlayerByName(user_name).setReady(True)
+        return 200
+    except Exception as e:
+        return e
 
 if __name__ == '__main__':
     # app.run(host='0.0.0.0',debug=1)
     # socketio.run(app, host='0.0.0.0', port=5000,debug=1)
-    socketio.run(app, host='0.0.0.0', port=80, debug=1)
+    socketio.run(app, host='0.0.0.0', port=80)

@@ -11,16 +11,19 @@ class Player:
         self.__name = name
         self.__ip = ip
         self.__score = score
+        self.__ready = False
 
     def __repr__(self) -> str:
         return str({"name": self.__name,
                     "ip": self.__ip,
-                    "score": self.__score})
+                    "score": self.__score,
+                    "ready": self.__ready})
 
     def __dict__(self) -> dict[str, str | int]:
         return {"name": self.__name,
                 "ip": self.__ip,
-                "score": self.__score}
+                "score": self.__score,
+                "ready": self.__ready}
 
     def getName(self) -> str:
         return (self.__name)
@@ -36,6 +39,12 @@ class Player:
 
     def addScore(self, score: int) -> None:
         self.__score += score
+
+    def hasReady(self) -> bool:
+        return (self.__ready)
+
+    def setReady(self, stat: bool) -> None:
+        self.__ready = stat
 
 
 class Question:
@@ -165,13 +174,13 @@ class Room:
                     "status": self.__status,
                     "timer": self.__timer, })
 
-    def __dict__(self)->dict:
+    def __dict__(self) -> dict:
         return {"room_id": self.__room_id,
-                    "player_list": self.__player_list,
-                    "question_list": self.__question_list,
-                    "master_ip": self.__master_ip,
-                    "status": self.__status,
-                    "timer": self.__timer, }
+                "player_list": self.__player_list,
+                "question_list": self.__question_list,
+                "master_ip": self.__master_ip,
+                "status": self.__status,
+                "timer": self.__timer, }
 
     def getId(self) -> str:
         return (self.__room_id)
@@ -186,6 +195,11 @@ class Room:
             if (inlist_player.getName() == player_name):
                 return (True)
         return (False)
+
+    def getPlayerByName(self, player_name: str) -> Player:
+        for inlist_player in self.__player_list:
+            if (inlist_player.getName() == player_name):
+                return (inlist_player)
 
     def addPlayer(self, player: Player) -> int:
         '''
@@ -211,6 +225,19 @@ class Room:
         self.__player_list.sort(
             key=lambda player: player.getScore(), reverse=True)
 
+    def isAllPlayersReady(self) -> bool:
+        for player in self.getPlayers():
+            if not player.hasReady():
+                return False
+        return True
+
+    def getPlayersInReady(self) -> int:
+        count = 0
+        for player in self.getPlayers():
+            if player.hasReady():
+                count += 1
+        return count
+
     def getQuestions(self) -> list[Question]:
         return (self.__question_list)
 
@@ -221,7 +248,6 @@ class Room:
         try:
             data = json.loads(json_file)
             for question in data:
-                print(question)
                 if (question["type"] == "SMC"):
                     self.__addQuesion(SMC(question["type"], question["showncode"], question["text"],
                                       question["remain"], question["options"], question["answer"]))
@@ -230,16 +256,15 @@ class Room:
                                       question["remain"], question["options"], question["answers"]))
                 elif (question["type"] == "YN"):
                     self.__addQuesion(YN(question["type"], question["showncode"], question["text"],
-                                          question["remain"], question["answer"]))
+                                         question["remain"], question["answer"]))
                 elif (question["type"] == "STAT"):
                     self.__addQuesion(STAT(question["type"], question["showncode"], question["text"],
-                                        question["remain"], question["state"]))
+                                           question["remain"], question["state"]))
         except Exception as e:
             print(e)
 
     def getCurrentQuestion(self) -> Question | SMC | MMC | YN | STAT:
         if (self.getStatus() > -1 and self.getStatus() < len(self.getQuestions())):
-            # print("in getCurrentQuuestion.")
             return (self.__question_list[self.getStatus()])
 
     def getMasterIp(self) -> str:

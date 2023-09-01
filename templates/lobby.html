@@ -29,7 +29,7 @@
         }
 
         function ClearAllRoomData(){
-            socket.emit("ClearAllRoomData",1,(res)=>{
+            socket.emit("ClearAllRoomData",1,()=>{
                 alert("Rooms={'000000': Room('000000')} is done.");
             });
         }

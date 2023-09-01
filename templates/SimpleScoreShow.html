@@ -20,7 +20,8 @@
     <p id="player_score" class="scoreShow-small-text">{{ score }}</p>
     <h2 class="mid-text">Waiting for next question...</h2>
     <script>
-        $("#player_name").text(sessionStorage.getItem("user_name"));
+        var user_name=sessionStorage.getItem("user_name")
+        $("#player_name").text(user_name);
         socket.on("toNextQuestion_res", () => {
             // 爲了問題方先運行好頁面使得status+1，答題方要延遲400ms
             setTimeout(function () {
@@ -28,8 +29,15 @@
             }, 400);
 
         });
-        //var interval = setInterval(checkRoomStatus, 500);
+        function doReady(){
+            socket.on("setReadyForPlayer",{"user_name":user_name,"room_id":room_id},(res)=>{
+                if(res==200){
+                    $("#do_ready_button").css({"display":"none"});
+                }
+            })
+        }
     </script>
+    <button class="setting-button" id="do_ready_button" onclick="doReady()">Ready</button>
 </body>
 
 </html>

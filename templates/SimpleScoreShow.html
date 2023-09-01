@@ -14,10 +14,10 @@
     </script>
 </head>
 
-<body>
+<body class="body-Rank">
     <h1 class="text-title">Result</h1>
     <p id="player_name" class="mid-text"></p>
-    <p id="player_score" class="small-text">{{ score }}</p>
+    <p id="player_score" class="scoreShow-small-text">{{ score }}</p>
     <h2 class="mid-text">Waiting for next question...</h2>
     <script>
         $("#player_name").text(sessionStorage.getItem("user_name"));

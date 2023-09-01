@@ -10,32 +10,41 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
-<body>
+<body class="body-Answer-Show-SMC">
+    <audio id="bgm-question-show" src="{{ url_for('static', filename='Texture/hats_and_kits_looping.mp3') }}" autoplay>Your
+        browser do not support audio.</audio>
     <div>
         <h1 class="text-title">{{shcd}} {{txt}}</h1>
         <p class="small-text">Single Select</p>
         <h3>Timer: <span id="timer">{{rmn}}</span> seconds</h3>
+        <br>
         <div class="option-show-SMC">
-            <p class="setting-button">A</p>
-            <p class="mid-text">{{ opt[0] }}</p>
+            <span class="option-show-letter-SMC">A</span>
+            <span class="option-show-text-SMC">{{ opt[0] }}</span>
         </div>
+
         <div class="option-show-SMC">
-            <p class="setting-button">B</p>
-            <p class="mid-text">{{ opt[1] }}</p>
+            <span class="option-show-letter-SMC">B</span>
+            <span class="option-show-text-SMC">{{ opt[1] }}</span>
         </div>
+
         <div class="option-show-SMC">
-            <p class="setting-button">Γ</p>
-            <p class="mid-text">{{ opt[2] }}</p>
+            <span class="option-show-letter-SMC">Γ</span>
+            <span class="option-show-text-SMC">{{ opt[2] }}</span>
         </div>
+
         <div class="option-show-SMC">
-            <p class="setting-button">Δ</p>
-            <p class="mid-text">{{ opt[3] }}</p>
+            <span class="option-show-letter-SMC">Δ</span>
+            <span class="option-show-text-SMC">{{ opt[3] }}</span>
         </div>
     </div>
     <script>
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         var urlParams = new URLSearchParams(window.location.search);
         var room_id = urlParams.get('room_id');
+        var three_sec_left = 0;
+
+
 
         function RefreshTimer() {
             //将room_id传到后端，再在后端计算剩余秒数传回
@@ -46,8 +55,17 @@
                     clearInterval(interval);
                     window.location.href = 'Rank?room_id=' + room_id;
                 }
-                else if(left_seconds <= 3){
-                    $("#timer").css({"color":"red"});
+                else if (three_sec_left == 0 && left_seconds <= 4) {
+                    three_sec_left = 1;
+                    $("#timer").css({ "color": "red" });
+                    $("#bgm-question-show").attr({ "src": "{{ url_for('static', filename='Texture/hats_and_kits_last3sec.mp3') }}", "loop": 0,"autoplay":1});
+                }
+
+            });
+            $("#bgm-question-show").on("timeupdate", function () {
+                if ((this.currentTime > this.duration - 0.225 ) && three_sec_left==0) {
+                    this.currentTime = 0;
+                    this.play();
                 }
             });
         }
@@ -57,7 +75,7 @@
 
         // 每隔一段时间调用函数，单位为ms
         var interval = setInterval(RefreshTimer, 100);
-       
+
     </script>
 </body>
 

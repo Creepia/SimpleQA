@@ -10,7 +10,9 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
-<body>
+<body class="body-Answer-Show-YN">
+    <audio id="bgm-question-show" src="{{ url_for('static', filename='Texture/hats_and_kits_looping.mp3') }}" autoplay>Your
+        browser do not support audio.</audio>
     <div class="container">
         <h1 class="text-title">{{shcd}} {{txt}}</h1>
         <p class="small-text">Yes-No</p>
@@ -20,6 +22,7 @@
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         var urlParams = new URLSearchParams(window.location.search);
         var room_id = urlParams.get('room_id');
+        var three_sec_left = 0;
 
         function RefreshTimer() {
             //将room_id传到后端，再在后端计算剩余秒数传回
@@ -30,8 +33,16 @@
                     clearInterval(interval);
                     window.location.href = 'Rank?room_id=' + room_id;
                 }
-                else if(left_seconds <= 3){
-                    $("#timer").css({"color":"red"});
+                else if (three_sec_left == 0 && left_seconds <= 4) {
+                    three_sec_left = 1;
+                    $("#timer").css({ "color": "red" });
+                    $("#bgm-question-show").attr({ "src": "{{ url_for('static', filename='Texture/hats_and_kits_last3sec.mp3') }}", "loop": 0,"autoplay":1});
+                }
+            });
+            $("#bgm-question-show").on("timeupdate", function () {
+                if ((this.currentTime > this.duration - 0.225 ) && three_sec_left==0) {
+                    this.currentTime = 0;
+                    this.play();
                 }
             });
         }

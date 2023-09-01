@@ -76,5 +76,313 @@
     ],
     "answer": "B",
     "remain":15
+  },{
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of France?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Madrid"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of Japan?",
+    "options": [
+      "Tokyo",
+      "Beijing",
+      "Seoul",
+      "New Delhi"
+    ],
+    "answer": "A",
+    "remain":30
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which planet is known as the Red Planet?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Saturn"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the chemical symbol for oxygen?",
+    "options": [
+      "O2",
+      "H2O",
+      "CO2",
+      "NaCl"
+    ],
+    "answer": "A",
+    "remain":20
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which famous scientist developed the theory of relativity?",
+    "options": [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Nikola Tesla"
+    ],
+    "answer": "B",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which is the largest mammal on Earth?",
+    "options": [
+      "Elephant",
+      "Blue Whale",
+      "Giraffe",
+      "Hippopotamus"
+    ],
+    "answer": "B",
+    "remain":15
+  },{
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of France?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Madrid"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of Japan?",
+    "options": [
+      "Tokyo",
+      "Beijing",
+      "Seoul",
+      "New Delhi"
+    ],
+    "answer": "A",
+    "remain":30
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which planet is known as the Red Planet?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Saturn"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the chemical symbol for oxygen?",
+    "options": [
+      "O2",
+      "H2O",
+      "CO2",
+      "NaCl"
+    ],
+    "answer": "A",
+    "remain":20
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which famous scientist developed the theory of relativity?",
+    "options": [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Nikola Tesla"
+    ],
+    "answer": "B",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which is the largest mammal on Earth?",
+    "options": [
+      "Elephant",
+      "Blue Whale",
+      "Giraffe",
+      "Hippopotamus"
+    ],
+    "answer": "B",
+    "remain":15
+  },{
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of France?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Madrid"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of Japan?",
+    "options": [
+      "Tokyo",
+      "Beijing",
+      "Seoul",
+      "New Delhi"
+    ],
+    "answer": "A",
+    "remain":30
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which planet is known as the Red Planet?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Saturn"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the chemical symbol for oxygen?",
+    "options": [
+      "O2",
+      "H2O",
+      "CO2",
+      "NaCl"
+    ],
+    "answer": "A",
+    "remain":20
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which famous scientist developed the theory of relativity?",
+    "options": [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Nikola Tesla"
+    ],
+    "answer": "B",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which is the largest mammal on Earth?",
+    "options": [
+      "Elephant",
+      "Blue Whale",
+      "Giraffe",
+      "Hippopotamus"
+    ],
+    "answer": "B",
+    "remain":15
+  },{
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of France?",
+    "options": [
+      "Paris",
+      "London",
+      "Rome",
+      "Madrid"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the capital of Japan?",
+    "options": [
+      "Tokyo",
+      "Beijing",
+      "Seoul",
+      "New Delhi"
+    ],
+    "answer": "A",
+    "remain":30
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which planet is known as the Red Planet?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Saturn"
+    ],
+    "answer": "A",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "What is the chemical symbol for oxygen?",
+    "options": [
+      "O2",
+      "H2O",
+      "CO2",
+      "NaCl"
+    ],
+    "answer": "A",
+    "remain":20
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which famous scientist developed the theory of relativity?",
+    "options": [
+      "Isaac Newton",
+      "Albert Einstein",
+      "Galileo Galilei",
+      "Nikola Tesla"
+    ],
+    "answer": "B",
+    "remain":15
+  },
+  {
+    "showncode":"uno",
+    "type": "SMC",
+    "text": "Which is the largest mammal on Earth?",
+    "options": [
+      "Elephant",
+      "Blue Whale",
+      "Giraffe",
+      "Hippopotamus"
+    ],
+    "answer": "B",
+    "remain":15
   }
 ]

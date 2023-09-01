@@ -8,21 +8,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
-<body>
-    <div class="container">
+<body class="body-Answer-Show-SMC">
+    <div>
         <h1 class="text-title">{{shcd}}</h1>
         <h3>Timer: <span id="timer">{{rmn}}</span> seconds</h3>
         <div class="answer-option">
-            <button id="option-A" class="option-button-SMC" style="position: absolute; left:6%;top:40%" onclick="pressedAnswerButton()">A</button>
+            <button id="option-A" class="option-button-SMC" style="position: absolute; left:6%;top:30%" onclick="pressedAnswerButton()">A</button>
         </div>
         <div class="answer-option">
-            <button id="option-B" class="option-button-SMC" style="position: absolute;right:6%;top:55%" onclick="pressedAnswerButton()">B</button>
+            <button id="option-B" class="option-button-SMC" style="position: absolute;right:6%;top:45%" onclick="pressedAnswerButton()">B</button>
         </div>
         <div class="answer-option">
-            <button id="option-G" class="option-button-SMC" style="position: absolute; left:6%;top:70%" onclick="pressedAnswerButton()">Γ</button>
+            <button id="option-G" class="option-button-SMC" style="position: absolute; left:6%;top:60%" onclick="pressedAnswerButton()">Γ</button>
         </div>
         <div class="answer-option">
-            <button id="option-D" class="option-button-SMC" style="position: absolute; right:6%;top:85%" onclick="pressedAnswerButton()">Δ</button>
+            <button id="option-D" class="option-button-SMC" style="position: absolute; right:6%;top:75%" onclick="pressedAnswerButton()">Δ</button>
         </div>
     </div>
     <script>
@@ -47,7 +47,7 @@
         function pressedAnswerButton(){
             button_id=event.target.id;
             chosen_answer=button_id.slice(7,8);
-            socket.emit("checkAnswerIfCorrect",{"room_id":room_id,"chosen_answer":chosen_answer},function(real_answer){
+            socket.emit("checkAnswerIfCorrect",{"room_id":room_id,"chosen_answer":chosen_answer,"user_name":sessionStorage.getItem("user_name")},function(real_answer){
                 $(".answer-option").css({"display":"none"});
                 $('#'+button_id).css({"display":"block"});
             });

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, current_app
 from flask_socketio import SocketIO, join_room
 from package import *
 import time
@@ -57,6 +57,11 @@ Rooms["000000"].setQuestionsFromJson('''
 @app.route('/lobby')
 def lobby():
     return render_template('lobby.html', Rooms=Rooms)
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return current_app.send_static_file("favicon.ico")
 
 
 @app.route('/')
@@ -177,8 +182,13 @@ def preanswer():
 
 
 @socketio.on("checkRoomStatus")
-def checkRoomStatus(room_id):
-    if room_id in Rooms:
+def checkRoomStatus(data):
+    room_id = data["room_id"]
+    user_name = data["user_name"]
+    if (not Rooms[room_id].hasPlayerByName(user_name)):
+        # 返回-99表示玩家不存在，客戶端跳轉回index
+        return -99
+    elif (room_id in Rooms):
         return Rooms[room_id].getStatus()
     else:
         # 返回-2表示房间不存在
@@ -280,9 +290,10 @@ def newQuestion(room_id):
 @socketio.on("getSecondsLeft")
 def getSecondsLeft(data):
     room_id = data["room_id"]
+    room = Rooms[room_id]
     current_time = time.time()
-    qtn_remain = Rooms[room_id].getCurrentQuestion().getRemain()
-    left_seconds = int(Rooms[room_id].getTimer() + qtn_remain - current_time)
+    qtn_remain = room.getCurrentQuestion().getRemain()
+    left_seconds = int(room.getTimer() + qtn_remain - current_time)
     if (left_seconds > 0):
         return left_seconds
     else:
@@ -317,15 +328,20 @@ def process_newroom(data):
 def checkAnswerIfCorrect(data):
     answer = data["chosen_answer"]
     room_id = data["room_id"]
+    user_name = data["user_name"]
     room = Rooms[room_id]
     print(answer)
     print(room_id)
     real_ans = room.getCurrentQuestion().getAnswer()
     if (real_ans == answer):
-        user_ip = request.remote_addr
         for player in room.getPlayers():
-            if (player.getIp() == user_ip):
-                player.addScore(10)
+            if (player.getName() == user_name):
+                current_time = time.time()
+                qtn_remain = room.getCurrentQuestion().getRemain()
+                left_seconds = int(room.getTimer() + qtn_remain - current_time)
+                add_score = 5 if (left_seconds < (qtn_remain//3)
+                                  ) else (10*left_seconds//qtn_remain+5)
+                player.addScore(add_score)
                 break
     return (real_ans)
 
@@ -367,6 +383,14 @@ def refreshRoomDataShow(p):
 def DeleteRoomData(room_id):
     if (room_id in Rooms):
         del Rooms[room_id]
+
+
+@socketio.on("ClearAllRoomData")
+def ClearAllRoomData(p):
+    global Rooms
+    del Rooms
+    Rooms = {"000000": Room("000000")}
+    return Rooms
 
 
 if __name__ == '__main__':

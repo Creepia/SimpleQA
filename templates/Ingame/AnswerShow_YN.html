@@ -10,11 +10,11 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 </head>
 
-<body>
+<body class="body-Answer-Show-YN">
     <div class="container">
         <h1 class="text-title">{{shcd}}</h1>
         <h3>Timer: <span id="timer">{{rmn}}</span> seconds</h3>
-        <div class="YN-answers-grid">
+        <div class="grid-option-button-YN">
             <button id="option-Y" class="option-button-YN" onclick="pressedAnswerButton()">Y</button>
             <button id="option-N" class="option-button-YN" onclick="pressedAnswerButton()">N</button>
         </div>
@@ -41,8 +41,8 @@
         function pressedAnswerButton() {
             button_id = event.target.id;
             chosen_answer = button_id.slice(7, 8);
-            socket.emit("checkAnswerIfCorrect", { "room_id": room_id, "chosen_answer": chosen_answer ,"user_id":sessionStorage.getItem("user_id")}, function (real_answer) {
-                $(".option-letter-big").css({"display":"none"});
+            socket.emit("checkAnswerIfCorrect", { "room_id": room_id, "chosen_answer": chosen_answer ,"user_name":sessionStorage.getItem("user_name")}, function (real_answer) {
+                $(".option-button-YN").css({"display":"none"});
                 // $('#' + button_id).css({ "display": "block","opacity":"0.5"});
                 $('#' + button_id).attr({"onclick":"none"});
             });

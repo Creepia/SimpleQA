@@ -23,7 +23,7 @@
     </script>
 </head>
 
-<body>
+<body class="body-RoomCreate">
     <div class="container">
         <h1>ID <span id="room-id"> </span></h1>
         <button class="hrline-button" onclick="toQuestionShow()">Start</button>
@@ -50,8 +50,6 @@
             var playerTable = document.getElementById('player-table');
             playerTable.innerHTML = '';
             socket.emit("checkPlayersData", room_id, function (pl) {
-                console.log("CheckingPlayersData");
-                console.log(pl);
                 players = pl;
             });
             for (var i = 0; i < players.length; i++) {
@@ -81,9 +79,8 @@
                     // 获取被点击的元素的index，然后在index处删除1个元素
                     var index = Array.from(playerTable.children).indexOf(this);
                     players.splice(index, 1);
-                    var ip = this.children[1].textContent;
-                    console.log(ip);
-                    socket.emit("removePlayer", { "ip": ip, "room_id": room_id });
+                    var name = this.children[0].textContent;
+                    socket.emit("removePlayer", { "name": name, "room_id": room_id });
                     displayPlayers();
                 });
 

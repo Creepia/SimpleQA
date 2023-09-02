@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Final Rank</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script>
+        // 截图功能实现
+        function takeScreenshot() {
+            html2canvas(document.body).then(function (canvas) {
+                var link = document.createElement('a');
+                link.download = 'final_rank_screenshot.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</head>
+
+<body class="body-Rank">
+    <div>
+        <a href="/" class="hrline-button index-btn">Index</a>
+    </div>
+
+    <div>
+        <button class="hrline-button screenshot-btn" onclick="takeScreenshot()">Screenshot</button>
+    </div>
+
+    <div class="award-ceremony">
+        <div class="podium">
+            <div class="second-place">
+                <div class="rank-circle" id="finalrank_player2_name">P2</div>
+                <div class="score" id="finalrank_player2_score">Score: 80</div>
+            </div>
+            <div class="first-place">
+                <div class="rank-circle" id="finalrank_player1_name">P1</div>
+                <div class="score" id="finalrank_player1_score">Score: 95</div>
+            </div>
+            <div class="third-place">
+                <div class="rank-circle" id="finalrank_player3_name">P3</div>
+                <div class="score" id="finalrank_player3_score">Score: 70</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="celebration">
+        <!-- Add some celebratory animations or effects here -->
+        <h1>Congratulations!</h1>
+    </div>
+
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var urlParams = new URLSearchParams(window.location.search);
+        var room_id = urlParams.get('room_id');
+        function RefreshRank() {
+            socket.emit("checkRankPlayers", room_id, function (res) {
+                $("#finalrank_player1_name").text(res["p1_name"]);
+                $("#finalrank_player1_score").text(res["p1_score"]);
+                $("#finalrank_player2_name").text(res["p2_name"]);
+                $("#finalrank_player2_score").text(res["p2_score"]);
+                $("#finalrank_player3_name").text(res["p3_name"]);
+                $("#finalrank_player3_score").text(res["p3_score"]);
+            });
+        }
+        RefreshRank();
+
+
+
+        // 当页面加载好后添加恭喜特效
+        document.addEventListener('DOMContentLoaded', function () {
+            var celebrationDiv = document.querySelector('.celebration');
+            celebrationDiv.style.display = 'block';
+            // Add celebratory animations/effects here, e.g., confetti, fireworks, etc.
+            setTimeout(function () {
+                celebrationDiv.style.display = 'none';
+            }, 3000); // Hide celebration after 3 seconds
+        });
+
+        // 給後端發送銷毀該房間信息的指令
+        document.addEventListener('beforeunload', function () {
+            socket.emit("DeleteRoomData",room_id)
+        });
+    </script>
+</body>
+
+</html>

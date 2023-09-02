@@ -376,7 +376,8 @@ def ClearAllRoomData(p):
 
 @socketio.on("countReadyPlayers")
 def countReadyPlayers(room_id):
-    return Rooms[room_id].getPlayersInReady()
+    if(room_id in Rooms):
+        return (Rooms[room_id].getPlayersInReady())
 
 @socketio.on("setReadyForPlayer")
 def setReadyForPlayer(data):
@@ -391,4 +392,4 @@ def setReadyForPlayer(data):
 if __name__ == '__main__':
     # app.run(host='0.0.0.0',debug=1)
     # socketio.run(app, host='0.0.0.0', port=5000,debug=1)
-    socketio.run(app, host='0.0.0.0', port=80)
+    socketio.run(app, host='0.0.0.0', port=80,debug=1)

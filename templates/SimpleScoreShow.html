@@ -19,8 +19,17 @@
     <p id="player_name" class="mid-text"></p>
     <p id="player_score" class="scoreShow-small-text">{{ score }}</p>
     <h2 class="mid-text">Waiting for next question...</h2>
+    <button class="hrline-button" id="do_ready_button" onclick="doReady()">Ready</button>
     <script>
         var user_name=sessionStorage.getItem("user_name")
+        function doReady(){
+            socket.emit("setReadyForPlayer",{"user_name":user_name,"room_id":room_id},(res)=>{
+                if(res==200){
+                    $("#do_ready_button").css({"display":"none"});
+                }
+            })
+        }
+
         $("#player_name").text(user_name);
         socket.on("toNextQuestion_res", () => {
             // 爲了問題方先運行好頁面使得status+1，答題方要延遲400ms
@@ -29,15 +38,8 @@
             }, 400);
 
         });
-        function doReady(){
-            socket.on("setReadyForPlayer",{"user_name":user_name,"room_id":room_id},(res)=>{
-                if(res==200){
-                    $("#do_ready_button").css({"display":"none"});
-                }
-            })
-        }
     </script>
-    <button class="setting-button" id="do_ready_button" onclick="doReady()">Ready</button>
+    
 </body>
 
 </html>

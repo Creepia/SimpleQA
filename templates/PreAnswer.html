@@ -3,10 +3,10 @@
 
 <head>
     <title>PreAnswer</title>
+    <link rel="preload" as="image" href="{{ url_for('static', filename='Texture/SimpleRank_bg.jpeg') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
-    <link rel="preload" as="image" href="{{ url_for('static', filename='Texture\SimpleRank_bg.jpeg') }}">
 </head>
 
 <body class="body-RoomJoin">
@@ -19,12 +19,12 @@
         var room_id = urlParams.get('room_id');
         var socket = io.connect('http://' + document.domain + ':' + location.port);
         function checkRoomStatus() {
-            socket.emit("checkRoomStatus", { "room_id": room_id, "user_name":sessionStorage.getItem("user_name") }, function (room_status) {
+            socket.emit("checkRoomStatus", { "room_id": room_id, "user_name": sessionStorage.getItem("user_name") }, function (room_status) {
                 console.log(room_status);
                 if (room_status === 0) {
                     // 如果房间状态为0，跳转到AnswerShow页面
                     window.location.href = '/AnswerShow?room_id=' + room_id;
-                }else if(room_status===-99){
+                } else if (room_status === -99) {
                     // 如果房间状态为-99則玩家不存在（或被刪除），跳轉回index
                     window.location.href = "/";
                 }

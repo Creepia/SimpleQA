@@ -5,26 +5,5 @@
     "text": "Is the Earth round?",
     "answer": "Y",
     "remain":15
-  },
-  {
-    "showncode":"dois",
-    "type": "YN",
-    "text": "Is the Earth flat?",
-    "answer": "N",
-    "remain":15
-  },
-  {
-    "showncode":"tres",
-    "type": "YN",
-    "text": "Is the Earth round?",
-    "answer": "Y",
-    "remain":15
-  },
-  {
-    "showncode":"quarte",
-    "type": "YN",
-    "text": "Is the Earth round?",
-    "answer": "Y",
-    "remain":15
   }
 ]

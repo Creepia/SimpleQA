@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Rank</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='Texture/texture_style.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
+    <script>
+        var socket = io.connect('http://' + document.domain + ':' + location.port);
+        var urlParams = new URLSearchParams(window.location.search);
+        var room_id = urlParams.get('room_id');
+        function toNextQuestion() {
+            socket.emit("toNextQuestion", room_id);
+            window.location.href = 'QuestionShow?room_id=' + room_id;
+        }
+    </script>
+</head>
+
+<body class="body-Rank">
+    <h1>Result</h1>
+    <div class="rank-table">
+        <p class="mid-text" style="color: gold;font-size: 320%;">No.1&emsp;&emsp;<span
+                id="simplerank_player1_name"></span>&emsp;&emsp;<span id="simplerank_player1_score"></span></p>
+        <p class="mid-text" style="color: silver;font-size: 300%;">No.2&emsp;&emsp;<span
+                id="simplerank_player2_name"></span>&emsp;&emsp;<span id="simplerank_player2_score"></span></p>
+        <p class="mid-text" style="color: chocolate;font-size: 280%;">No.3&emsp;&emsp;<span
+                id="simplerank_player3_name"></span>&emsp;&emsp;<span id="simplerank_player3_score"></span></p>
+    </div>
+    <!-- Add more players as needed -->
+    <button id="next-button" class="hrline-button" onclick="toNextQuestion()">NEXT</button>
+    <p class="show-ready-player-text" id="count_ready_players">0</p>
+    <script>
+        function RefreshRank() {
+            socket.emit("checkRankPlayers", room_id, function (res) {
+                $("#simplerank_player1_name").text(res["p1_name"]);
+                $("#simplerank_player1_score").text(res["p1_score"]);
+                $("#simplerank_player2_name").text(res["p2_name"]);
+                $("#simplerank_player2_score").text(res["p2_score"]);
+                $("#simplerank_player3_name").text(res["p3_name"]);
+                $("#simplerank_player3_score").text(res["p3_score"]);
+            });
+
+        }
+        RefreshRank();
+        function RefreshReadys() {
+            socket.emit("countReadyPlayers", room_id, (res) => {
+                $("#count_ready_players").text(res+" players are in ready");
+            });
+        }
+        var interval = setInterval(RefreshReadys, 500);
+    </script>
+</body>
+
+</html>

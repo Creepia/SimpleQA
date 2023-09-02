@@ -1,4 +1,4 @@
-.body-Answer-Show-SMC{
+.body-Answer-Show-SMC {
     text-align: left;
     margin: 0;
     padding: 6% 3% 0 8%;
@@ -8,7 +8,7 @@
     background-attachment: fixed;
 }
 
-.body-Answer-Show-STAT{
+.body-Answer-Show-STAT {
     text-align: left;
     margin: 0;
     padding: 6% 3% 0 8%;
@@ -18,7 +18,7 @@
     background-attachment: fixed;
 }
 
-.body-Answer-Show-YN{
+.body-Answer-Show-YN {
     text-align: left;
     margin: 0;
     padding: 6% 3% 0 8%;
@@ -28,7 +28,7 @@
     background-attachment: fixed;
 }
 
-.body-Rank{
+.body-Rank {
     text-align: center;
     margin: 0;
     padding: 8% 8% 0 8%;
@@ -36,9 +36,11 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-attachment: fixed;
+    animation: bright_fade_in;
+    animation-duration: 2s;
 }
 
-.body-RoomCreate{
+.body-RoomCreate {
     text-align: center;
     margin: 0;
     padding: 10% 8% 0 8%;
@@ -48,7 +50,7 @@
     background-attachment: fixed;
 }
 
-.body-RoomJoin{
+.body-RoomJoin {
     text-align: center;
     margin: 0;
     padding: 10% 8% 0 8%;
@@ -61,11 +63,11 @@
 .index-bg {
     position: fixed;
     z-index: -100;
-    top:0%;
-    right:0%;
+    top: 0%;
+    right: 0%;
     width: 100%;
     height: 100%;
-    float:left;
+    float: left;
     background-image: url('index_bg.jpeg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -74,7 +76,7 @@
     animation-duration: 2s;
 }
 
-.index-title{
+.index-title {
     font-size: 400%;
     position: relative;
     animation: simple_fade_in;
@@ -82,7 +84,7 @@
 }
 
 .setting-button {
-    display:block;
+    display: block;
     font-size: 3ch;
     padding: 1% 1%;
     background-color: #22c795;
@@ -91,14 +93,15 @@
     border-radius: 15px;
     box-shadow: 0px 3px 3px #3a4f41;
     animation: simple_fade_in;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
 }
+
 .setting-button:hover {
     background-color: #26ecb1;
 }
 
-.hrline-button{
-    display:inline;
+.hrline-button {
+    display: inline;
     font-size: 3ch;
     padding: 1% 1%;
     background-color: #22c795;
@@ -107,13 +110,14 @@
     border-radius: 15px;
     box-shadow: 0px 3px 3px #3a4f41;
     animation: simple_fade_in;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
 }
+
 .hrline-button:hover {
     background-color: #26ecb1;
 }
 
-.text-title{
+.text-title {
     font-size: 300%;
     position: relative;
     width: 100%;
@@ -124,26 +128,42 @@
 
 .small-text {
     font-size: 16px;
-    font-weight:bold;
+    font-weight: bold;
     color: #9836c3;
     animation: simple_fade_in_inplace;
-    animation-duration: 2s;
+    animation-duration: 1.5s;
 }
 
-.scoreShow-small-text{
+.show-ready-player-text {
+    display: flex;
+    justify-content: center;
     font-size: 200%;
-    font-family: "Exo2-SemiBold";
+    animation: scale_in;
+    animation-duration: 1s;
+}
+
+.scoreShow-small-text {
+    font-size: 200%;
+    font-family: "Exo2-SemiBold", sans-serif;
     color: #9836c3;
     animation: simple_fade_in_inplace;
     animation-duration: 2s;
 }
 
-.rank-table{
+.congratulations_title{
+    margin: 0 0 10% 0;
+    animation: scale_emphasize;
+    animation-duration: 2s;
+}
+
+
+
+.rank-table {
     animation: simple_fade_in;
     animation-duration: 2s;
 }
 
-.setting-input{
+.setting-input {
     background: #8cbfaa;
     font-size: 3ch;
     width: 15ch;
@@ -158,7 +178,7 @@
     text-align: center;
 }
 
-.option-button-YN{
+.option-button-YN {
     margin: 2% 1%;
     -webkit-border-radius: 8;
     -moz-border-radius: 8;
@@ -171,19 +191,23 @@
     animation-duration: 2s;
 }
 
-#option-Y{
+#option-Y {
     background: #04b72e;
-}#option-Y:hover{
+}
+
+#option-Y:hover {
     background-color: #00c086;
 }
 
-#option-N{
+#option-N {
     background: #ff3b2d;
-}#option-N:hover{
+}
+
+#option-N:hover {
     background-color: #ff652d;
 }
 
-.option-button-SMC{
+.option-button-SMC {
     display: block;
     margin: 0% 1%;
     -webkit-border-radius: 8;
@@ -196,17 +220,19 @@
     text-decoration: none;
     animation: simple_fade_in_inplace;
     animation-duration: 2s;
-}.option-button-SMC:hover {
+}
+
+.option-button-SMC:hover {
     background-color: #89ffdc;
 }
 
 .option-show-SMC {
     display: block;
     align-items: center;
-    margin: 1% 3% 3% 25%;
+    margin: 1% 3% 3% 22%;
 }
 
-.option-show-letter-SMC{
+.option-show-letter-SMC {
     font-size: 4ch;
     padding: 1% 3%;
     width: 3ch;
@@ -226,6 +252,63 @@
     margin: 20% 3%;
     animation: simple_fade_in;
     animation-duration: 2s;
+}
+
+.award-ceremony {
+    width: 70%;
+    height: 50%;
+    display: inline-block;
+    align-items: center;
+    justify-content: center;
+    margin-top: 8%;
+}
+
+.podium {
+    align-items: center;
+    justify-content: center;
+    padding: 2% 20%;
+}
+
+.rank-circle {
+    display: block;
+    padding: 3%;
+    background-color: red;
+    color: white;
+    font-size: 24px;
+    align-items: center;
+    margin: 0 1%;
+}
+
+.first-place-podium {
+    display: inline-block;
+    font-size: 200%;
+    font-family: "Exo2-SemiBold", sans-serif;
+    border-style:solid;
+    border-width: thick;
+    border-color: gold;
+    padding: 2% 4% 2% 2%;
+}
+
+.second-place-podium {
+    display: inline-block;
+    font-size: 180%;
+    font-family: "Exo2-SemiBold", sans-serif;
+    border-style:solid;
+    border-width: thick;
+    border-color: silver;
+    margin: 0 2%;
+    padding: 2% 4% 2% 2%;
+}
+
+.third-place-podium {
+    display: inline-block;
+    font-size: 150%;
+    font-family: "Exo2-SemiBold", sans-serif;
+    border-style:solid;
+    border-width: thick;
+    border-color: chocolate;
+    margin: 0 2%;
+    padding: 2% 4% 2% 2%;
 }
 
 @font-face {
@@ -257,15 +340,61 @@
 
 @keyframes bright_fade_in {
     0% {
-        filter:brightness(0.5);
+        filter: brightness(0.5);
     }
-    30%{
-        filter:brightness(0.8);
+
+    30% {
+        filter: brightness(0.8);
     }
-    70%{
-        filter:brightness(1.5);
+
+    70% {
+        filter: brightness(1.5);
     }
+
     100% {
-        filter:brightness(1);
+        filter: brightness(1);
+    }
+}
+
+@keyframes scale_in {
+    0% {
+        font-size: 50%;
+    }
+
+    70% {
+        font-size: 250%;
+    }
+
+    100% {
+        font-size: 200%;
+    }
+
+}
+
+@keyframes scale_emphasize {
+    0% {
+        transform: scale3d(1, 1, 1)
+    }
+
+    10%,
+    20% {
+        transform: scale3d(0.85, 0.85, 0.85) rotate3d(0, 0, 1, -4deg)
+    }
+
+    30%,
+    50%,
+    70%,
+    90% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 4deg)
+    }
+
+    40%,
+    60%,
+    80% {
+        transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -4deg)
+    }
+
+    100% {
+        transform: scale3d(1, 1, 1)
     }
 }
